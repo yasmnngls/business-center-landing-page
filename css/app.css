@@ -274,7 +274,8 @@
 @container board (max-width: 480px) {
   .c-grid > .c-card[data-span] { grid-column: span 12; }
 }
-.c-grid--viewer > .c-card { cursor: var(--cursor-pointer); }
+/* Only selectable (tabindex) while the Ask panel is there to focus (FR-352). */
+.c-grid--viewer > .c-card[tabindex] { cursor: var(--cursor-pointer); }
 .dash__empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 1.5px dashed var(--c-line-strong); border-radius: 12px; color: var(--c-mut); font-size: 13.5px; text-align: center; padding: 24px; }
 .dash__empty > .i { width: 28px; height: 28px; color: var(--c-faint-soft); }
 .dash__empty p { margin: 0; }
@@ -466,16 +467,12 @@ button.c-recent:active:not([aria-disabled="true"]) { transform: scale(0.97); }
 .c-msg-ai__body p { margin: 0; }
 .c-msg-ai__body .c-msg-ai__src { margin-top: 8px; font-size: 11.5px; color: var(--c-faint); }
 .c-msg-ai__src b { color: var(--c-mut); font-weight: 500; }
-.c-askpanel__off { margin: 0 18px 12px; padding: 12px 14px; border-radius: 12px; background: var(--c-tint); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-.c-askpanel__off p { margin: 0; font-size: 12.5px; color: var(--c-mut); line-height: 1.5; }
-.c-askpanel__off b { color: var(--c-ink); font-weight: 600; }
 .c-selchip { margin: 0 18px 8px; display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; padding: 4px 6px 4px 10px; border-radius: 99px; background: var(--c-accent-softer); color: var(--c-accent-ink); font-size: 12px; }
 .c-selchip button { border: none; background: none; color: inherit; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; }
 .c-selchip button:hover { background: var(--c-accent-soft); }
 .c-selchip .i { width: 12px; height: 12px; }
 .c-askpanel__input { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--c-line); }
 .c-askpanel__input .c-input { flex: 1; border-radius: 99px; padding: 9px 14px; }
-.c-askpanel.is-off .c-askpanel__input { opacity: .55; }
 
 /* ---------- Share dialog (ShareDialog.tsx) ---------- */
 .c-overlay {
@@ -890,16 +887,25 @@ button.flow-node:active { transform: scale(0.98); }
   transition-delay: calc(var(--i, 0) * 50ms);
 }
 
-/* Ask section: a soft highlight reads down the Dataset rows once, before the steps run */
-.app-ui .mini-window__row { position: relative; }
-.app-ui .mini-window__row::after {
-  content: ''; position: absolute; inset: 1px -8px 0; border-radius: 6px;
-  background: var(--c-accent-softer); opacity: 0; pointer-events: none;
+/* Ask section result card: the computed figure leads, the breakdown backs it, the AI's sentence explains it */
+.app-ui.reply { position: relative; background: var(--c-card); border: 1px solid var(--c-line); border-radius: 18px; padding: 24px 28px 20px; box-shadow: var(--shadow-card); font-size: 15.5px; }
+.app-ui .reply__label { display: block; font-size: 13px; font-weight: 500; color: var(--c-mut); }
+.app-ui .reply__top {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; margin: 4px 0 0;
+  font-size: clamp(28px, 3vw, 36px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; color: var(--c-ink);
 }
-.js .ask__stage.is-in .app-ui .mini-window__row::after { animation: row-read var(--dur-dialog) var(--ease-in-out) both; animation-delay: 250ms; }
-.js .ask__stage.is-in .app-ui .mini-window__row + .mini-window__row::after { animation-delay: 370ms; }
-.js .ask__stage.is-in .app-ui .mini-window__row + .mini-window__row + .mini-window__row::after { animation-delay: 490ms; }
-@keyframes row-read { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
+.app-ui .reply__top strong { color: var(--c-accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+.app-ui .reply__bars { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--c-mut); }
+.app-ui .mini-bar { display: grid; grid-template-columns: 84px minmax(0, 1fr) 56px; align-items: center; gap: 12px; }
+.app-ui .mini-bar span:last-child { text-align: right; font-weight: 500; }
+.app-ui .mini-bar:first-child { color: var(--c-ink); font-weight: 500; }
+.app-ui .mini-bar__track .bar { height: 8px; }
+.app-ui .reply__note { margin: 20px 0 0; padding-left: 14px; border-left: 2px solid var(--c-accent-soft); font-size: 14.5px; line-height: 1.55; color: var(--c-ink); }
+.app-ui .reply__note strong { font-weight: 600; }
+.app-ui.reply .c-card__foot { margin-top: 18px; }
+@media (max-width: 480px) {
+  .app-ui.reply { padding: 20px 20px 18px; }
+}
 
 .shake { animation: shake 240ms var(--ease-out); }
 @keyframes shake { 20% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 80% { transform: translateX(-2px); } }
@@ -928,7 +934,6 @@ button.flow-node:active { transform: scale(0.98); }
   html { scroll-behavior: auto; }
   .js .reveal { transform: none; }
   .js .reveal.is-in { transition: opacity 300ms ease; transition-delay: 0ms; }
-  .js .ask__stage.is-in .app-ui .mini-window__row::after { animation: none; }
   .modal, .c-dialog, .c-menu, .c-toast, .c-grid > .c-card.is-entering, .c-grid > .c-card.is-leaving, .c-msg.c-msg-in, .fx.fx-in { transform: none; }
   .fx.fx-in { filter: none; }
   .nav--sticky, .nav--sticky.is-visible { transform: none; transition: opacity 200ms ease; }
