@@ -377,67 +377,85 @@ section[id] { scroll-margin-top: 72px; }
 }
 
 /* ============ 05 Ask ============ */
-.ask__stage { position: relative; max-width: 1040px; margin: clamp(48px, 6vw, 72px) auto 0; }
+/* One path: the question, down the reasoning trail, across to the result. The result card sits
+   lower and wider than the path, so the eye lands on the question first and the answer last. */
+.ask__stage {
+  --ask-gap: clamp(40px, 5vw, 72px);
+  --ask-line: color-mix(in srgb, var(--accent) 45%, transparent);
+  position: relative; max-width: 1040px; margin: clamp(48px, 6vw, 72px) auto 0;
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--ask-gap); align-items: start;
+}
+.ask__path { display: flex; flex-direction: column; min-width: 0; }
 .bubble {
-  position: relative; z-index: 3; max-width: 380px; padding: 16px 20px; border-radius: 18px;
+  position: relative; max-width: 380px; padding: 16px 20px; border-radius: 18px 18px 18px 6px;
   background: var(--soft); font-size: 19px; font-weight: 500; line-height: 1.45;
 }
-.ask__mock { position: relative; display: flex; justify-content: flex-end; margin-top: -36px; }
-.mini-window {
-  position: absolute; left: 34%; top: 60px; width: 300px; background: #fff;
-  border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-card); padding: 12px 16px 18px; font-size: 13px;
-}
-.mini-window__bar { display: flex; gap: 16px; color: var(--faint); font-size: 15px; padding-bottom: 10px; }
-.mini-window__title { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; font-weight: 500; padding: 6px 0 14px; border-bottom: 1px solid var(--line); }
-.mini-window__cols, .mini-window__row { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 8px; padding: 9px 0; }
-.mini-window__cols { color: var(--muted); font-weight: 500; }
-.mini-window__row { border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
 
-.reply {
-  position: relative; z-index: 2; width: min(540px, 100%); background: #fff; border: 1px solid var(--line);
-  border-radius: 18px; padding: 28px 28px 24px; box-shadow: var(--shadow-card); font-size: 15.5px;
-}
-.reply p { margin: 0 0 16px; line-height: 1.55; }
-.reply p strong { font-weight: 600; }
-.steps { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-direction: column; }
-.steps li { position: relative; display: flex; align-items: center; gap: 12px; padding: 9px 0; color: var(--muted); }
-.steps li:not(:last-child)::after { content: ''; position: absolute; left: 7.5px; top: 30px; height: 16px; width: 1px; background: var(--line); }
-.steps li.is-done { color: var(--ink); }
-.steps li.is-done .i { color: var(--c-green, #149e61); }
-.reply .c-card__foot { margin-top: 18px; }
-.reply__bars { display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; font-variant-numeric: tabular-nums; }
-.mini-bar { display: grid; grid-template-columns: 84px minmax(0, 1fr) 56px; align-items: center; gap: 12px; }
-.mini-bar span:last-child { text-align: right; font-weight: 500; }
-.mini-bar__track .bar { height: 8px; }
-.reply__links { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: 14px; font-weight: 500; color: var(--accent); }
+/* Reasoning trail: each step hangs off the one before it */
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.steps li { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; color: var(--muted); line-height: 20px; }
+.steps li > .i { margin-top: 2px; }
+.steps li > span { min-width: 0; }
+.steps li:not(:last-child)::after { content: ''; position: absolute; left: 7.5px; top: 30px; bottom: -6px; width: 1px; background: var(--ask-line); }
+.steps li.is-done { color: var(--ink); font-weight: 500; }
+.steps li.is-done > .i { color: var(--green-fg); }
+.steps code { white-space: nowrap; font-family: inherit; font-size: 13px; color: var(--ink); background: var(--soft); border-radius: 6px; padding: 1px 6px; }
+.ask__trail { position: relative; padding: 18px 0 0 20px; font-size: 14.5px; }
+.ask__trail::before { content: ''; position: absolute; left: 27.5px; top: 0; height: 22px; width: 1px; background: var(--ask-line); }
 
-/* Ask build-in, in the order Centri builds an answer: steps run, numbers land, and only then the AI's sentence */
+/* The Dataset, as a faint sample under its step, not a window of its own */
+.ask__sample { display: grid; margin-top: 6px; font-size: 12px; line-height: 18px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.ask__row { position: relative; display: grid; grid-template-columns: 40px 68px auto; gap: 8px; padding: 2px 0; }
+.ask__row::after { content: ''; position: absolute; inset: 0 -6px; border-radius: 5px; background: var(--accent-tint); opacity: 0; pointer-events: none; }
+
+/* The last step points across to the result */
+.ask__link { position: relative; flex: 1 0 28px; align-self: flex-start; height: 20px; margin-right: calc(4px - var(--ask-gap)); color: var(--accent); }
+.ask__link::before { content: ''; position: absolute; left: 4px; right: 2px; top: 50%; height: 1px; background: var(--ask-line); transform-origin: left; }
+.ask__link .i { position: absolute; right: 0; top: 3px; width: 14px; height: 14px; }
+
+/* Result card: its place in the path lives here; how it looks is a mock, in app.css */
+.reply { margin-top: clamp(28px, 4vw, 56px); }
+
+/* Ask build-in, in the order Centri builds an answer: rows are read, steps run, the arrow reaches
+   the result, numbers land, and only then the AI's sentence */
+.ask__trail::before { transform-origin: top; transition: transform var(--dur-pop) var(--ease-out) 150ms; }
 .ask__stage .steps li { transition: opacity var(--dur-pop) var(--ease-out) var(--d, 0ms), transform var(--dur-pop) var(--ease-out) var(--d, 0ms); }
-.ask__stage .steps li:nth-child(1) { --d: 400ms; }
-.ask__stage .steps li:nth-child(2) { --d: 680ms; }
-.ask__stage .steps li:nth-child(3) { --d: 960ms; }
+.ask__stage .steps li:nth-child(1) { --d: 300ms; }
+.ask__stage .steps li:nth-child(2) { --d: 760ms; }
+.ask__stage .steps li:nth-child(3) { --d: 1000ms; }
 .ask__stage .steps li:nth-child(4) { --d: 1240ms; }
 .ask__stage .steps li::after { transform-origin: top; transition: transform var(--dur-pop) var(--ease-out) calc(var(--d, 0ms) + 140ms); }
-.ask__stage .steps li.is-done .i { transition: opacity var(--dur-pop) var(--ease-out) var(--d, 0ms), transform var(--dur-pop) var(--ease-out) var(--d, 0ms); }
-.ask__stage .mini-bar { --d: calc(1450ms + var(--b, 0) * 70ms); }
+.ask__stage .steps li.is-done > .i { transition: opacity var(--dur-pop) var(--ease-out) var(--d, 0ms), transform var(--dur-pop) var(--ease-out) var(--d, 0ms); }
+.js .ask__stage.is-in .ask__row::after { animation: row-read var(--dur-dialog) var(--ease-in-out) both; animation-delay: var(--rd, 400ms); }
+.ask__row:nth-child(2) { --rd: 490ms; }
+.ask__row:nth-child(3) { --rd: 580ms; }
+@keyframes row-read { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
+.ask__link::before { transition: transform var(--dur-dialog) var(--ease-out) 1400ms; }
+.ask__link .i { transition: opacity var(--dur-pop) var(--ease-out) 1520ms, transform var(--dur-pop) var(--ease-out) 1520ms; }
+.ask__stage .reply__head { transition: opacity var(--dur-dialog) var(--ease-out) 1560ms, transform var(--dur-dialog) var(--ease-out) 1560ms; }
+.ask__stage .mini-bar { --d: calc(1640ms + var(--b, 0) * 70ms); }
 .ask__stage .mini-bar:nth-child(2) { --b: 1; }
 .ask__stage .mini-bar:nth-child(3) { --b: 2; }
 .ask__stage .mini-bar:nth-child(4) { --b: 3; }
 .ask__stage .mini-bar > span:not(.mini-bar__track) { transition: opacity var(--dur-pop) var(--ease-out) var(--d); }
 .ask__stage .mini-bar__track .bar { clip-path: inset(0 0 0 0 round 3px); transition: clip-path var(--dur-dialog) var(--ease-out) var(--d); }
-.ask__stage .reply > p { transition: opacity var(--dur-dialog) var(--ease-out) 1900ms, transform var(--dur-dialog) var(--ease-out) 1900ms; }
-.ask__stage .reply .c-card__foot { transition: opacity var(--dur-pop) var(--ease-out) 2100ms; }
-.ask__stage.reveal:not(.is-in) .steps li, .ask__stage.reveal:not(.is-in) .reply > p { opacity: 0; transform: translateY(4px); }
-.ask__stage.reveal:not(.is-in) .steps li::after { transform: scaleY(0); }
-.ask__stage.reveal:not(.is-in) .steps li.is-done .i { opacity: 0; transform: scale(.9); }
+.ask__stage .reply__note { transition: opacity var(--dur-dialog) var(--ease-out) 2050ms, transform var(--dur-dialog) var(--ease-out) 2050ms; }
+.ask__stage .reply .c-card__foot { transition: opacity var(--dur-pop) var(--ease-out) 2250ms; }
+.ask__stage.reveal:not(.is-in) .steps li, .ask__stage.reveal:not(.is-in) .reply__head, .ask__stage.reveal:not(.is-in) .reply__note { opacity: 0; transform: translateY(4px); }
+.ask__stage.reveal:not(.is-in) .steps li::after, .ask__stage.reveal:not(.is-in) .ask__trail::before { transform: scaleY(0); }
+.ask__stage.reveal:not(.is-in) .ask__link::before { transform: scaleX(0); }
+.ask__stage.reveal:not(.is-in) .ask__link .i { opacity: 0; transform: translateX(-4px); }
+.ask__stage.reveal:not(.is-in) .steps li.is-done > .i { opacity: 0; transform: scale(.9); }
 .ask__stage.reveal:not(.is-in) .mini-bar > span:not(.mini-bar__track), .ask__stage.reveal:not(.is-in) .reply .c-card__foot { opacity: 0; }
 .ask__stage.reveal:not(.is-in) .mini-bar__track .bar { clip-path: inset(0 100% 0 0 round 3px); }
 
 @media (prefers-reduced-motion: reduce) {
-  .js .ask__stage .steps li, .js .ask__stage .steps li::after, .js .ask__stage .steps li.is-done .i, .js .ask__stage .reply > p,
+  .js .ask__stage .steps li, .js .ask__stage .steps li::after, .js .ask__stage .steps li.is-done > .i, .js .ask__stage .ask__trail::before,
+  .js .ask__stage .ask__link::before, .js .ask__stage .ask__link .i, .js .ask__stage .reply__head, .js .ask__stage .reply__note,
   .js .ask__stage .mini-bar > span, .js .ask__stage .mini-bar__track .bar, .js .ask__stage .reply .c-card__foot {
     opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none;
   }
+  .js .ask__stage.is-in .ask__row::after { animation: none; }
 }
 
 /* ============ 06 Workflow cards ============ */
@@ -800,18 +818,17 @@ section[id] { scroll-margin-top: 72px; }
 }
 
 /* ============ Responsive ============ */
-@media (max-width: 1080px) {
-  .mini-window { left: 0; }
-}
-
 @media (max-width: 960px) {
   .intro__grid { grid-template-columns: minmax(0, 1fr); }
   .intro .kicker { padding-left: 0; }
   .review { grid-template-columns: minmax(0, 1fr); }
   .review__art { min-height: 440px; }
-  .ask__mock { margin-top: 20px; }
-  .mini-window { display: none; }
-  .reply { width: 100%; }
+  /* Ask stacks: the trail runs straight down into the result */
+  .ask__stage { grid-template-columns: minmax(0, 1fr); }
+  .bubble { max-width: none; }
+  .ask__link { display: none; }
+  .ask__trail li:last-child::after { content: ''; position: absolute; left: 7.5px; top: 30px; bottom: -20px; width: 1px; background: var(--ask-line); }
+  .reply { margin-top: 12px; }
 }
 
 @media (max-width: 767px) {

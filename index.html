@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=33">
-<link rel="stylesheet" href="css/app.css?v=33">
+<link rel="stylesheet" href="css/style.css?v=34">
+<link rel="stylesheet" href="css/app.css?v=34">
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -315,38 +315,41 @@
     </div>
 
     <div class="ask__stage" id="ask">
-      <div class="bubble">Which stores grew revenue fastest from April to May?</div>
+      <!-- The path reads question ↓ reasoning trail → result -->
+      <div class="ask__path">
+        <div class="bubble">Which stores grew revenue fastest from April to May?</div>
+        <ol class="steps ask__trail" role="list" aria-label="How Centri answered">
+          <li>
+            <svg class="i" aria-hidden="true"><use href="#i-table"/></svg>
+            <span>Reading Retail Sales
+              <span class="ask__sample" aria-hidden="true">
+                <span class="ask__row"><span>May 1</span><span>Downtown</span><span>$412.60</span></span>
+                <span class="ask__row"><span>May 1</span><span>Airport</span><span>$1,240</span></span>
+                <span class="ask__row"><span>May 2</span><span>Riverside</span><span>$702.15</span></span>
+              </span>
+            </span>
+          </li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-layout"/></svg><span>Applying definition <code>SUM(Total Amount) by Store</code></span></li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><span>Excluding 33 refunded orders</span></li>
+          <li class="is-done"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span>Computed from 2,531 rows across April and May</span><span class="ask__link" aria-hidden="true"><svg class="i"><use href="#i-arrow-right"/></svg></span></li>
+        </ol>
+      </div>
 
-      <div class="ask__mock">
-        <div class="mini-window app-ui">
-          <div class="mini-window__bar"><span>‹</span><span>›</span><span>↻</span></div>
-          <div class="mini-window__title"><svg class="i"><use href="#i-table"/></svg>Retail Sales</div>
-          <div class="mini-window__cols">
-            <span>Order Date</span><span>Store</span><span>Total</span>
-          </div>
-          <div class="mini-window__row"><span>May 1</span><span>Downtown</span><span>$412.60</span></div>
-          <div class="mini-window__row"><span>May 1</span><span>Airport</span><span>$1,240</span></div>
-          <div class="mini-window__row"><span>May 2</span><span>Riverside</span><span>$702.15</span></div>
+      <div class="reply app-ui">
+        <div class="reply__head">
+          <span class="reply__label">Revenue growth by Store · April to May</span>
+          <p class="reply__top"><span>Airport</span> <strong>+18.4%</strong></p>
         </div>
-
-        <div class="reply app-ui">
-          <p>Airport grew fastest. Revenue rose <strong>18.4%</strong> from April to May, about twice Downtown’s growth.</p>
-          <ol class="steps">
-            <li><svg class="i"><use href="#i-table"/></svg>Reading Retail Sales</li>
-            <li><svg class="i"><use href="#i-layout"/></svg>Applying definition “SUM(Total Amount) by Store”</li>
-            <li><svg class="i"><use href="#i-search"/></svg>Excluding 33 refunded orders</li>
-            <li class="is-done"><svg class="i"><use href="#i-check"/></svg>Computed from 2,531 rows across April and May</li>
-          </ol>
-          <div class="reply__bars">
-            <div class="mini-bar"><span>Airport</span><span class="mini-bar__track"><span class="bar bar--accent" style="width:100%"></span></span><span>+18.4%</span></div>
-            <div class="mini-bar"><span>Downtown</span><span class="mini-bar__track"><span class="bar" style="width:49%"></span></span><span>+9.1%</span></div>
-            <div class="mini-bar"><span>Riverside</span><span class="mini-bar__track"><span class="bar" style="width:26%"></span></span><span>+4.7%</span></div>
-            <div class="mini-bar"><span>Northgate</span><span class="mini-bar__track"><span class="bar bar--muted" style="width:12%"></span></span><span class="muted">−2.3%</span></div>
-          </div>
-          <div class="c-card__foot">
-            <span class="c-prov">⟐ Retail Sales · Revenue growth by Store</span>
-            <span class="c-actions"><span class="c-fake-btn">Definition</span><span class="c-fake-btn">Rows</span><a href="#dashboard" class="c-fake-btn"><svg class="i"><use href="#i-pin"/></svg>Pin to Dashboard</a></span>
-          </div>
+        <div class="reply__bars">
+          <div class="mini-bar"><span>Airport</span><span class="mini-bar__track"><span class="bar bar--accent" style="width:100%"></span></span><span>+18.4%</span></div>
+          <div class="mini-bar"><span>Downtown</span><span class="mini-bar__track"><span class="bar" style="width:49%"></span></span><span>+9.1%</span></div>
+          <div class="mini-bar"><span>Riverside</span><span class="mini-bar__track"><span class="bar" style="width:26%"></span></span><span>+4.7%</span></div>
+          <div class="mini-bar"><span>Northgate</span><span class="mini-bar__track"><span class="bar bar--muted" style="width:12%"></span></span><span class="muted">−2.3%</span></div>
+        </div>
+        <p class="reply__note">Airport grew fastest. Revenue rose <strong>18.4%</strong> from April to May, about twice Downtown’s growth.</p>
+        <div class="c-card__foot">
+          <span class="c-prov">⟐ Retail Sales · Revenue growth by Store</span>
+          <span class="c-actions"><span class="c-fake-btn">Definition</span><span class="c-fake-btn">Rows</span><a href="#dashboard" class="c-fake-btn"><svg class="i"><use href="#i-pin"/></svg>Pin to Dashboard</a></span>
         </div>
       </div>
     </div>
@@ -1110,6 +1113,6 @@
   </div>
 </div>
 
-<script src="js/script.js?v=33"></script>
+<script src="js/script.js?v=34"></script>
 </body>
 </html>
