@@ -1,0 +1,25 @@
+{
+  "name": "centri-intro-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Centri 60-second intro — Remotion",
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "make:silence": "node scripts/make-silence.mjs",
+    "render:silent": "remotion render CentriIntro out/centri-intro-silent.mp4 --codec=h264",
+    "render:cue": "npm run make:silence && remotion render CentriIntroMusicCue out/centri-intro-music-cue.mp4 --codec=h264",
+    "render": "npm run render:silent && npm run render:cue"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.529",
+    "@remotion/google-fonts": "4.0.529",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "5.8.3"
+  }
+}

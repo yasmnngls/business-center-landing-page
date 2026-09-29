@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Centri — Ask your business a question</title>
+<meta name="description" content="Centri connects your spreadsheets and systems, answers questions in plain language, and shows you the exact data and definition behind every number.">
+<link rel="icon" href="img/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="css/app.css?v=8">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<!-- Icon sprite (Akar-style: 24px grid, stroke 2, round caps) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5A6.5 6.5 0 0 1 21.5 20"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 3h6l-1 6 4 4H6l4-4zM12 13v8"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66L20 8.5M20 3v5.5h-5.5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/><rect x="9" y="9" width="6" height="6" rx="1"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></symbol>
+    <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 10h18M10 10v11"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  </defs>
+</svg>
+
+<!-- Sticky nav (appears after scrolling past the hero) -->
+<header class="nav nav--sticky" id="stickyNav" aria-hidden="true">
+  <div class="nav__inner">
+    <a href="#top" class="brand" tabindex="-1"><img class="brand__logo" src="img/logo.webp" alt="" width="30" height="30"><span class="brand__name">Centri</span></a>
+    <nav class="nav__links">
+      <a href="#product" tabindex="-1">Product</a>
+      <a href="#dashboard" tabindex="-1">Dashboard</a>
+      <a href="#share" tabindex="-1">Sharing</a>
+      <a href="#how" tabindex="-1">How it works</a>
+      <a href="#faq" tabindex="-1">FAQ</a>
+    </nav>
+    <button class="btn btn--dark btn--sm js-open-modal" tabindex="-1">Request Access</button>
+  </div>
+</header>
+
+<!-- 01 Hero -->
+<section class="hero-wrap" id="top">
+  <div class="hero">
+    <div class="hero__clouds" aria-hidden="true">
+      <span class="cloud cloud--1"></span><span class="cloud cloud--2"></span><span class="cloud cloud--3"></span><span class="cloud cloud--4"></span><span class="cloud cloud--5"></span>
+    </div>
+
+    <header class="nav" id="heroNav">
+      <div class="nav__inner">
+        <a href="#top" class="brand"><img class="brand__logo" src="img/logo.webp" alt="" width="30" height="30"><span class="brand__name">Centri</span></a>
+        <nav class="nav__links">
+          <a href="#product">Product</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#share">Sharing</a>
+          <a href="#how">How it works</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="nav__actions">
+          <button class="btn btn--dark btn--sm js-open-modal">Request Access</button>
+          <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+        </div>
+      </div>
+      <div class="mobile-menu" id="mobileMenu" hidden>
+        <a href="#product" class="js-close-menu">Product</a>
+        <a href="#dashboard" class="js-close-menu">Dashboard</a>
+        <a href="#share" class="js-close-menu">Sharing</a>
+        <a href="#how" class="js-close-menu">How it works</a>
+        <a href="#faq" class="js-close-menu">FAQ</a>
+      </div>
+    </header>
+
+    <div class="hero__intro">
+      <a href="#introducing" class="chip-link">An AI-powered Business Command Center <span class="chev">›</span></a>
+      <h1 class="hero__title">Ask your business a question.<br>Get an answer you can trust.</h1>
+      <p class="hero__sub">Centri connects your spreadsheets and systems, answers questions in plain language, and shows you the exact data and definition behind every number.</p>
+      <button class="btn btn--dark btn--lg js-open-modal">Request Access</button>
+      <span class="hero__note">For operators, chiefs of staff, and BizOps teams.</span>
+    </div>
+
+    <!-- App window mock: Centri Home -->
+    <div class="app-window app-ui hero__app">
+      <aside class="c-sidebar">
+        <div class="c-sidebar__logo"><span class="c-logo">Centri</span></div>
+        <nav class="c-sidebar__nav" aria-label="App navigation (illustration)">
+          <span class="c-nav is-active"><svg class="i"><use href="#i-home"/></svg>Home</span>
+          <span class="c-nav"><svg class="i"><use href="#i-grid"/></svg>Dashboard</span>
+          <span class="c-nav"><svg class="i"><use href="#i-plug"/></svg>Connections</span>
+          <a class="c-nav" href="#automate"><svg class="i"><use href="#i-bolt"/></svg>Automate</a>
+          <span class="c-nav-label">Workspace</span>
+          <span class="c-nav"><svg class="i"><use href="#i-folder"/></svg>Projects</span>
+          <span class="c-nav"><svg class="i"><use href="#i-users"/></svg>Team</span>
+          <span class="c-nav-label">Recent</span>
+          <button type="button" class="c-recent is-on" data-hq="revenue" aria-current="true">Total revenue, May 2023</button>
+          <button type="button" class="c-recent" data-hq="refunds">Refund rate by store</button>
+          <button type="button" class="c-recent" data-hq="q2">Q2 orders vs plan</button>
+        </nav>
+        <div class="c-user"><span class="c-avatar">DR</span><span class="c-user__txt"><b>Dana R.</b><em>Operations</em></span></div>
+      </aside>
+
+      <div class="c-main">
+        <div class="c-topbar">
+          <span class="c-crumb"><span>Home</span><span class="c-faint">/</span><span class="truncate" id="heroCrumb">Total revenue, May 2023</span></span>
+          <span class="c-src" id="heroSrc"><svg class="i"><use href="#i-table"/></svg>Retail Sales</span>
+        </div>
+
+        <div class="c-body">
+          <div class="c-thread" id="heroThread" aria-live="polite">
+          <div class="c-asked">
+            <div class="c-asked__q">What was our total revenue in May 2023?</div>
+          </div>
+
+          <article class="c-card c-card--hero">
+            <header class="c-card__head">
+              <h4 class="c-card__title">Total revenue · May 2023</h4>
+              <span class="chip chip--green">Computed from 1,284 rows</span>
+            </header>
+            <div class="c-card__def">SUM(Total Amount) · May 2023 · monthly</div>
+            <div class="c-card__mark">
+              <div class="c-stat">$410,000</div>
+              <div class="c-stat-label">Total revenue · May 1 – May 31, 2023</div>
+              <p class="c-plain">In plain language: the sum of Total Amount for every order dated May 2023, excluding refunded orders.</p>
+            </div>
+            <div class="rows" id="heroRowsTable" hidden>
+              <div class="rows__head"><span>Order</span><span>Order date</span><span class="col-store">Store</span><span class="ta-r">Total Amount</span></div>
+              <div id="heroRowsBody"></div>
+              <div class="rows__foot"><span>Showing 6 of 1,284 rows</span><span class="fw-500 ink">SUM = $410,000.00</span></div>
+            </div>
+            <footer class="c-card__foot">
+              <span class="c-prov">⟐ Retail Sales · Revenue (SUM Total Amount)</span>
+              <span class="c-fresh">Computed 2m ago</span>
+              <span class="c-actions">
+                <button type="button" id="heroRowsToggle" aria-expanded="false"><svg class="i"><use href="#i-table"/></svg><span>Rows</span></button>
+                <a href="#dashboard"><svg class="i"><use href="#i-pin"/></svg>Pin to Dashboard</a>
+              </span>
+            </footer>
+          </article>
+          </div>
+
+          <div class="c-suggest c-suggest--chips" id="heroSuggest" role="group" aria-label="Suggested questions">
+            <button type="button" data-hq="refunds">Refund rate by store</button>
+            <button type="button" data-hq="products">Top products in May</button>
+            <button type="button" data-hq="q2">Q2 orders vs plan</button>
+            <button type="button" data-hq="stores">Revenue by store</button>
+          </div>
+
+          <form class="c-composer" id="heroAskForm">
+            <input class="c-composer__input" id="heroAskInput" placeholder="Ask a question about your business data…" autocomplete="off" aria-label="Ask a question about your business data">
+            <button class="c-send" type="submit" aria-label="Send"><svg class="i"><use href="#i-arrow-up"/></svg></button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="frame-col">
+
+  <!-- 02 Introducing -->
+  <section class="sec intro" id="introducing">
+    <div class="intro__grid">
+      <a href="#product" class="kicker">Introducing Centri <span class="chev">›</span></a>
+      <div class="prose-lg">
+        <p><strong>Today’s reporting is rebuilt by hand.</strong> The same weekly report, from the same three spreadsheets. Two people report the same number differently, and neither one is wrong. A number gets questioned in a meeting, and by the time it’s re-derived, the decision has already been made without it.</p>
+        <p><strong>Centri is a command center for your numbers.</strong> Ask a business question in plain language and get an answer with its definition and source rows attached, so you stop rebuilding the report and start trusting what’s in it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Connect -->
+  <section class="sec sec--tint connect" id="product">
+    <div class="center-head">
+      <a href="#how" class="kicker">Connect <span class="chev">›</span></a>
+      <h2 class="h-display">Bring the data you already have.<br>No warehouse required.</h2>
+    </div>
+
+    <div class="tile-wall" aria-hidden="true">
+      <svg width="0" height="0" style="position:absolute"><symbol id="lg-sheets" viewBox="0 0 24 24"><path d="M11.318 12.545H7.91v-1.909h3.41v1.91zM14.728 0v6h6l-6-6zm1.363 10.636h-3.41v1.91h3.41v-1.91zm0 3.273h-3.41v1.91h3.41v-1.91zM20.727 6.5v15.864c0 .904-.732 1.636-1.636 1.636H4.909a1.636 1.636 0 0 1-1.636-1.636V1.636C3.273.732 4.005 0 4.909 0h9.318v6.5h6.5zm-3.273 2.773H6.545v7.909h10.91v-7.91zm-6.136 4.636H7.91v1.91h3.41v-1.91z"/></symbol><symbol id="lg-bigquery" viewBox="0 0 24 24"><path d="M5.676 10.595h2.052v5.244a5.892 5.892 0 0 1-2.052-2.088v-3.156zm18.179 10.836a.504.504 0 0 1 0 .708l-1.716 1.716a.504.504 0 0 1-.708 0l-4.248-4.248a.206.206 0 0 1-.007-.007c-.02-.02-.028-.045-.043-.066a10.736 10.736 0 0 1-6.334 2.065C4.835 21.599 0 16.764 0 10.799S4.835 0 10.8 0s10.799 4.835 10.799 10.8c0 2.369-.772 4.553-2.066 6.333.025.017.052.028.074.05l4.248 4.248zm-5.028-10.632a8.015 8.015 0 1 0-8.028 8.028h.024a8.016 8.016 0 0 0 8.004-8.028zm-4.86 4.98a6.002 6.002 0 0 0 2.04-2.184v-1.764h-2.04v3.948zm-4.5.948c.442.057.887.08 1.332.072.4.025.8.025 1.2 0V7.692H9.468v9.035z"/></symbol><symbol id="lg-stripe" viewBox="0 0 24 24"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></symbol><symbol id="lg-hubspot" viewBox="0 0 24 24"><path d="M18.164 7.93V5.084a2.198 2.198 0 001.267-1.978v-.067A2.2 2.2 0 0017.238.845h-.067a2.2 2.2 0 00-2.193 2.193v.067a2.196 2.196 0 001.252 1.973l.013.006v2.852a6.22 6.22 0 00-2.969 1.31l.012-.01-7.828-6.095A2.497 2.497 0 104.3 4.656l-.012.006 7.697 5.991a6.176 6.176 0 00-1.038 3.446c0 1.343.425 2.588 1.147 3.607l-.013-.02-2.342 2.343a1.968 1.968 0 00-.58-.095h-.002a2.033 2.033 0 102.033 2.033 1.978 1.978 0 00-.1-.595l.005.014 2.317-2.317a6.247 6.247 0 104.782-11.134l-.036-.005zm-.964 9.378a3.206 3.206 0 113.215-3.207v.002a3.206 3.206 0 01-3.207 3.207z"/></symbol><symbol id="lg-gmail" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></symbol><symbol id="lg-zendesk" viewBox="0 0 24 24"><path d="M12.914 2.904V16.29L24 2.905H12.914zM0 2.906C0 5.966 2.483 8.45 5.543 8.45s5.542-2.484 5.543-5.544H0zm11.086 4.807L0 21.096h11.086V7.713zm7.37 7.84c-3.063 0-5.542 2.48-5.542 5.543H24c0-3.06-2.48-5.543-5.543-5.543z"/></symbol><symbol id="lg-intercom" viewBox="0 0 24 24"><path d="M21 0H3C1.343 0 0 1.343 0 3v18c0 1.658 1.343 3 3 3h18c1.658 0 3-1.342 3-3V3c0-1.657-1.342-3-3-3zm-5.801 4.399c0-.44.36-.8.802-.8.44 0 .8.36.8.8v10.688c0 .442-.36.801-.8.801-.443 0-.802-.359-.802-.801V4.399zM11.2 3.994c0-.44.357-.799.8-.799s.8.359.8.799v11.602c0 .44-.357.8-.8.8s-.8-.36-.8-.8V3.994zm-4 .405c0-.44.359-.8.799-.8.443 0 .802.36.802.8v10.688c0 .442-.36.801-.802.801-.44 0-.799-.359-.799-.801V4.399zM3.199 6c0-.442.36-.8.802-.8.44 0 .799.358.799.8v7.195c0 .441-.359.8-.799.8-.443 0-.802-.36-.802-.8V6zM20.52 18.202c-.123.105-3.086 2.593-8.52 2.593-5.433 0-8.397-2.486-8.521-2.593-.335-.288-.375-.792-.086-1.128.285-.334.79-.375 1.125-.09.047.041 2.693 2.211 7.481 2.211 4.848 0 7.456-2.186 7.479-2.207.334-.289.839-.25 1.128.086.289.336.25.84-.086 1.128zm.281-5.007c0 .441-.36.8-.801.8-.441 0-.801-.36-.801-.8V6c0-.442.361-.8.801-.8.441 0 .801.357.801.8v7.195z"/></symbol><symbol id="lg-meta" viewBox="0 0 24 24"><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></symbol><symbol id="lg-telegram" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></symbol><symbol id="lg-bluesky" viewBox="0 0 24 24"><path d="M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026"/></symbol><symbol id="lg-excel" viewBox="0 0 24 24"><path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z"/></symbol><symbol id="lg-mailersend" viewBox="0 0 48 48"><g transform="scale(0.6)"><path fill="#4e48e0" d="M79.273 27.246c-.312-.454-.831-.687-1.355-.687H48.112L62.975 2.801c.383-.61.404-1.445-.06-2.115C62.599.232 62.075 0 61.549 0H35.883c-2.577 0-4.985 1.382-6.428 3.689L.285 50.316c-.382.611-.398 1.446.062 2.115.311.454.831.686 1.355.686h29.791L16.628 76.881c-.268.429-.349.968-.227 1.482.188.796.893 1.319 1.654 1.319h25.652c2.596 0 5.022-1.393 6.476-3.717l14.289-22.848h.001l14.862-23.757c.382-.61.398-1.446-.061-2.115"/><path fill="#4e48e0" d="M64.474 53.113L50.182 75.965c-1.454 2.325-3.88 3.717-6.476 3.717H18.054c-.761 0-1.466-.522-1.654-1.319-.122-.514-.04-1.054.227-1.482l14.867-23.769h32.979z"/><path fill="#1c81c1" d="M48.093 26.559h29.825c.523 0 1.043.233 1.355.687.46.669.443 1.505.062 2.115L64.472 53.118H31.48l16.613-26.559z"/><path fill="#5cc4cd" d="M1.701 53.118c-.523 0-1.043-.232-1.354-.686-.46-.67-.444-1.505-.062-2.115l29.17-46.628C30.898 1.382 33.306 0 35.882 0h25.667c.526 0 1.051.232 1.366.687.464.67.443 1.505.06 2.115l-31.48 50.316H1.701z"/></g></symbol></svg>
+      <div class="tile-row tile-row--1">
+        <div class="tile-track">
+          <span class="tile tile--logo tile--solid" style="--brand:#217346"><svg class="tile__logo"><use href="#lg-excel"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#34A853"><svg class="tile__logo"><use href="#lg-sheets"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#4285F4"><svg class="tile__logo"><use href="#lg-bigquery"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#635BFF"><svg class="tile__logo"><use href="#lg-stripe"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#FF7A59"><svg class="tile__logo"><use href="#lg-hubspot"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#EA4335"><svg class="tile__logo"><use href="#lg-gmail"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#03363D"><svg class="tile__logo"><use href="#lg-zendesk"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#0866FF"><svg class="tile__logo"><use href="#lg-meta"/></svg></span>
+        </div>
+      </div>
+      <div class="tile-row tile-row--2">
+        <div class="tile-track">
+          <span class="tile tile--logo tile--solid" style="--brand:#286EFA"><svg class="tile__logo"><use href="#lg-intercom"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#217346"><svg class="tile__logo"><use href="#lg-excel"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#635BFF"><svg class="tile__logo"><use href="#lg-stripe"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#26A5E4"><svg class="tile__logo"><use href="#lg-telegram"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#34A853"><svg class="tile__logo"><use href="#lg-sheets"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#FF7A59"><svg class="tile__logo"><use href="#lg-hubspot"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#0866FF"><svg class="tile__logo"><use href="#lg-meta"/></svg></span>
+          <span class="tile tile--logo"><svg class="tile__logo tile__logo--color"><use href="#lg-mailersend"/></svg></span>
+        </div>
+      </div>
+      <div class="tile-row tile-row--3">
+        <div class="tile-track">
+          <span class="tile tile--logo tile--solid" style="--brand:#EA4335"><svg class="tile__logo"><use href="#lg-gmail"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#03363D"><svg class="tile__logo"><use href="#lg-zendesk"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#1185FE"><svg class="tile__logo"><use href="#lg-bluesky"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#4285F4"><svg class="tile__logo"><use href="#lg-bigquery"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#26A5E4"><svg class="tile__logo"><use href="#lg-telegram"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#286EFA"><svg class="tile__logo"><use href="#lg-intercom"/></svg></span>
+          <span class="tile tile--logo" style="--brand:#34A853"><svg class="tile__logo"><use href="#lg-sheets"/></svg></span>
+          <span class="tile tile--logo tile--solid" style="--brand:#635BFF"><svg class="tile__logo"><use href="#lg-stripe"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="body-narrow">Spreadsheets and exports are the primary input. Upload a workbook, or connect Google Sheets, BigQuery, Stripe, HubSpot, Gmail, Zendesk, Intercom or Meta Ads, and Centri profiles it — columns, types, and dates — then asks only about what’s genuinely ambiguous.</p>
+  </section>
+
+  <!-- 04 Trust -->
+  <section class="sec trust" id="trust">
+    <div class="narrow-head">
+      <h2 class="h-section">A number is not an answer.</h2>
+      <p class="lead">Every Insight Centri gives you comes with its definition, in plain language, and the exact rows it was computed from. Nothing is a black box, and nothing changes unless you ask it to. <a href="#faq" class="link-dotted">Learn more</a></p>
+    </div>
+
+    <div class="trust__panel">
+      <div data-tab-panel="answer">
+        <div class="bar-list">
+          <div class="bar-row"><span class="bar-row__label"><span class="brand__mark brand__mark--xs"><span></span></span>Airport</span><span class="bar-track"><span class="bar bar--accent" style="width:100%"></span></span><span class="bar-row__val">$128,420</span></div>
+          <div class="bar-row"><span class="bar-row__label">Downtown</span><span class="bar-track"><span class="bar" style="width:84%"></span></span><span class="bar-row__val">$107,860</span></div>
+          <div class="bar-row"><span class="bar-row__label">Riverside</span><span class="bar-track"><span class="bar" style="width:73%"></span></span><span class="bar-row__val">$93,540</span></div>
+          <div class="bar-row"><span class="bar-row__label">Northgate</span><span class="bar-track"><span class="bar" style="width:63%"></span></span><span class="bar-row__val">$80,180</span></div>
+          <div class="bar-row bar-row--total"><span class="bar-row__label">Total revenue · May 2023</span><span></span><span class="bar-row__val">$410,000</span></div>
+        </div>
+      </div>
+
+      <div data-tab-panel="definition" hidden>
+        <div class="def">
+          <p class="def__plain">Total revenue is the sum of <strong>Total Amount</strong> for every order dated May 1–31, 2023, excluding refunded orders.</p>
+          <div class="code">
+            <div><span class="code__fn">SUM</span>(Total Amount)</div>
+            <div><span class="faint">where</span> Order Date in May 2023</div>
+            <div><span class="faint">and</span> Status ≠ Refunded</div>
+          </div>
+          <div class="kv">
+            <div><span>Dataset</span><span>Retail Sales</span></div>
+            <div><span>Period</span><span>May 1 – May 31, 2023</span></div>
+            <div><span>Rows included</span><span class="tnum">1,284 of 1,317</span></div>
+            <div><span>Confirmed</span><span>By you, Jun 2, 2023</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div data-tab-panel="rows" hidden>
+        <div class="rows rows--flat">
+          <div class="rows__head rows__head--4"><span>Order</span><span>Date</span><span>Store</span><span class="ta-r">Total Amount</span></div>
+          <div id="trustRowsBody"></div>
+          <div class="rows__foot"><span>Showing 8 of 1,284 rows</span><span class="fw-600 ink">SUM = $410,000.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="segmented" data-tabs role="tablist">
+      <button class="is-on" data-tab="answer" role="tab" aria-selected="true">The answer</button>
+      <button data-tab="definition" role="tab" aria-selected="false">The definition</button>
+      <button data-tab="rows" role="tab" aria-selected="false">The source rows</button>
+    </div>
+  </section>
+
+  <!-- 05 Ask -->
+  <section class="sec ask">
+    <div class="narrow-head">
+      <h2 class="h-section">Ask in plain language.</h2>
+      <p class="lead">No SQL, no pivot tables. Centri reads your question, applies the definition your business uses, and computes the answer directly from your data. The AI explains; it never does the arithmetic.</p>
+    </div>
+
+    <div class="ask__stage" id="ask">
+      <div class="bubble">Which stores grew revenue fastest from April to May?</div>
+
+      <div class="ask__mock">
+        <div class="mini-window app-ui">
+          <div class="mini-window__bar"><span>‹</span><span>›</span><span>↻</span></div>
+          <div class="mini-window__title"><svg class="i"><use href="#i-table"/></svg>Retail Sales</div>
+          <div class="mini-window__cols">
+            <span>Order Date</span><span>Store</span><span>Total</span>
+          </div>
+          <div class="mini-window__row"><span>May 1</span><span>Downtown</span><span>$412.60</span></div>
+          <div class="mini-window__row"><span>May 1</span><span>Airport</span><span>$1,240</span></div>
+          <div class="mini-window__row"><span>May 2</span><span>Riverside</span><span>$702.15</span></div>
+        </div>
+
+        <div class="reply app-ui">
+          <p>Airport grew fastest. Revenue rose <strong>18.4%</strong> from April to May, about twice Downtown’s growth.</p>
+          <ol class="steps">
+            <li><svg class="i"><use href="#i-table"/></svg>Reading Retail Sales</li>
+            <li><svg class="i"><use href="#i-layout"/></svg>Applying definition “SUM(Total Amount) by Store”</li>
+            <li><svg class="i"><use href="#i-search"/></svg>Excluding 33 refunded orders</li>
+            <li class="is-done"><svg class="i"><use href="#i-check"/></svg>Computed from 2,531 rows across April and May</li>
+          </ol>
+          <div class="reply__bars">
+            <div class="mini-bar"><span>Airport</span><span class="mini-bar__track"><span class="bar bar--accent" style="width:100%"></span></span><span>+18.4%</span></div>
+            <div class="mini-bar"><span>Downtown</span><span class="mini-bar__track"><span class="bar" style="width:49%"></span></span><span>+9.1%</span></div>
+            <div class="mini-bar"><span>Riverside</span><span class="mini-bar__track"><span class="bar" style="width:26%"></span></span><span>+4.7%</span></div>
+            <div class="mini-bar"><span>Northgate</span><span class="mini-bar__track"><span class="bar bar--muted" style="width:12%"></span></span><span class="muted">−2.3%</span></div>
+          </div>
+          <div class="c-card__foot">
+            <span class="c-prov">⟐ Retail Sales · Revenue growth by Store</span>
+            <span class="c-actions"><span class="c-fake-btn">Definition</span><span class="c-fake-btn">Rows</span><a href="#dashboard" class="c-fake-btn"><svg class="i"><use href="#i-pin"/></svg>Pin to Dashboard</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Workflow -->
+  <section class="sec workflow" id="how">
+    <div class="center-head">
+      <a href="#trust" class="kicker">How it works <span class="chev">›</span></a>
+      <h2 class="h-display">One workflow.<br>Everything your business runs on.</h2>
+    </div>
+
+    <div class="cards-4">
+      <article class="use-card">
+        <div class="use-card__art use-card__art--pink">
+          <div class="prompt a">Profile my Retail Sales spreadsheet</div>
+          <div class="use-card__mock app-ui a" style="--d:140ms">
+            <div class="m-file a" style="--d:320ms"><span><b>Retail Sales.xlsx</b><em>1,317 rows · 9 columns</em></span><span class="chip chip--green a a--pop" style="--d:620ms">Profiled</span></div>
+            <div class="m-q a" style="--d:460ms">Two columns look like dates. Which one marks when a sale happened?</div>
+            <div class="m-opts a" style="--d:560ms"><span class="opt opt--on">Order Date</span><span class="opt">Ship Date</span></div>
+          </div>
+        </div>
+        <p class="caption"><strong>Connect</strong> Bring in your spreadsheets and systems. No warehouse, no data team.</p>
+      </article>
+
+      <article class="use-card">
+        <div class="use-card__art use-card__art--cyan">
+          <div class="prompt a">What was our average order value in May?</div>
+          <div class="use-card__mock app-ui a" style="--d:140ms">
+            <div class="c-stat-label a" style="--d:320ms">Average order value</div>
+            <div class="m-value a" style="--d:400ms" data-count="319.31" data-prefix="$">$319.31</div>
+            <div class="m-meta a" style="--d:520ms">Revenue ÷ Orders · May 2023</div>
+            <div class="m-links a" style="--d:620ms"><span class="c-prov">⟐ Retail Sales · AOV</span><span>Definition</span><span>Rows</span></div>
+          </div>
+        </div>
+        <p class="caption"><strong>Understand</strong> Ask in plain language and get an answer you can trace.</p>
+      </article>
+
+      <article class="use-card">
+        <div class="use-card__art use-card__art--mint">
+          <a href="#dashboard" class="prompt a">Pin this to Weekly Ops Review</a>
+          <div class="use-card__mock app-ui a" style="--d:140ms">
+            <div class="m-dash-head a" style="--d:320ms"><b>Weekly Ops Review</b><span class="avatars"><i class="a a--pop" style="--d:420ms">DR</i><i class="a a--pop" style="--d:480ms">MK</i><i class="a a--pop" style="--d:540ms">JS</i></span></div>
+            <div class="m-stats">
+              <div class="a" style="--d:440ms"><em>Revenue · May</em><b data-count="410000" data-prefix="$">$410,000</b><span class="chip chip--green a a--pop" style="--d:1100ms">+6.2%</span></div>
+              <div class="a" style="--d:540ms"><em>Orders · May</em><b data-count="1284">1,284</b><span class="faint">33 refunded</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="caption"><strong>Decide</strong> Keep the answers that matter on a Dashboard your team shares.</p>
+      </article>
+
+      <article class="use-card">
+        <div class="use-card__art use-card__art--lilac">
+          <div class="prompt a">Send the Monday report after I review it</div>
+          <div class="use-card__mock app-ui a" style="--d:140ms">
+            <div class="m-step a" style="--d:320ms"><span>1</span>Refresh Retail Sales<span class="chip chip--green a a--pop" style="--d:520ms">Done</span></div>
+            <div class="m-step a" style="--d:420ms"><span>2</span>Recompute Insights<span class="chip chip--green a a--pop" style="--d:720ms">Done</span></div>
+            <div class="m-step m-step--on a" style="--d:520ms"><span>3</span>You review the draft<span class="chip chip--accent a a--pop" style="--d:1200ms">Review</span></div>
+            <div class="m-step m-step--wait a" style="--d:620ms"><span>4</span>Send to leadership<span>Waiting</span></div>
+          </div>
+        </div>
+        <p class="caption"><strong>Act</strong> Turn recurring reports into a workflow, with a person still reviewing what goes out.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 07 Dashboard (interactive) -->
+  <section class="sec dashboard" id="dashboard">
+    <div class="center-head">
+      <a href="#share" class="kicker">Dashboard <span class="chev">›</span></a>
+      <h2 class="h-display">Pin an answer.<br>Build the board your team checks every Monday.</h2>
+      <p class="lead lead--center">Pin the answers you trust, arrange them on a Dashboard, and refresh them in one click. Every card keeps its definition and source rows attached.</p>
+    </div>
+
+    <p class="demo-hint"><svg class="i"><use href="#i-sparkle"/></svg>Try it. Switch a card between Chart and Table, refresh it, remove it, then add it back from Pinned insights. <button type="button" class="demo-toggle" id="demoToggle" hidden>Replay demo</button></p>
+
+    <div class="app-window app-ui dash" id="dash">
+      <aside class="c-rail" aria-hidden="true">
+        <span class="c-rail__logo">C</span>
+        <span class="c-rail__item"><svg class="i"><use href="#i-home"/></svg></span>
+        <span class="c-rail__item is-active"><svg class="i"><use href="#i-grid"/></svg></span>
+        <span class="c-rail__item"><svg class="i"><use href="#i-plug"/></svg></span>
+        <span class="c-rail__item"><svg class="i"><use href="#i-bolt"/></svg></span>
+        <span class="c-rail__sep"></span>
+        <span class="c-rail__item"><svg class="i"><use href="#i-folder"/></svg></span>
+        <span class="c-rail__item"><svg class="i"><use href="#i-users"/></svg></span>
+      </aside>
+
+      <div class="c-main">
+        <div class="dash__toolbar">
+          <div class="dash__titlebox">
+            <div class="dash__titleline">
+              <h3 class="dash__title" id="dashTitle">Weekly Ops Review</h3>
+              <input class="c-input dash__title-input" id="dashTitleInput" aria-label="Dashboard name" maxlength="48" hidden>
+              <button class="c-icon-btn" id="dashRename" type="button" aria-label="Rename dashboard" title="Rename dashboard"><svg class="i"><use href="#i-pencil"/></svg></button>
+              <span class="c-badge" id="dashVis"><svg class="i"><use href="#i-lock"/></svg><span>Private</span></span>
+            </div>
+            <p class="dash__sub">Drag pinned insights onto the board, or ask AI to build it for you.</p>
+          </div>
+          <div class="dash__actions">
+            <label class="c-select-wrap"><span class="sr-only">Filter by source</span>
+              <select class="c-select" id="dashFilter">
+                <option value="all">All sources</option>
+                <option value="Retail Sales">Retail Sales</option>
+                <option value="Online Orders">Online Orders</option>
+              </select>
+            </label>
+            <button class="c-tb-btn" id="dashRefresh" type="button" title="Refresh every Insight on this Dashboard"><svg class="i"><use href="#i-refresh"/></svg>Refresh</button>
+            <button class="c-tb-btn" id="dashTidy" type="button"><svg class="i"><use href="#i-layout"/></svg>Tidy layout</button>
+            <div class="c-menu-wrap">
+              <button class="c-tb-btn" id="dashExportBtn" type="button" aria-haspopup="menu" aria-expanded="false"><svg class="i"><use href="#i-download"/></svg>Export<svg class="i i--chev"><use href="#i-chev-down"/></svg></button>
+              <div class="c-menu" id="dashExportMenu" role="menu" hidden>
+                <button type="button" role="menuitem" data-export="png">Download each chart as PNG</button>
+                <button type="button" role="menuitem" data-export="pdf">Export as PDF</button>
+              </div>
+            </div>
+            <button class="c-btn c-btn--primary c-btn--sm js-open-share" id="dashShare" type="button"><svg class="i"><use href="#i-share"/></svg>Share</button>
+          </div>
+        </div>
+
+        <div class="dash__body">
+          <div class="dash__canvas" id="dashCanvas">
+            <div class="c-grid" id="dashGrid"></div>
+            <div class="dash__empty" id="dashEmpty" hidden>
+              <svg class="i"><use href="#i-grid"/></svg>
+              <p>Drag insights here or ask AI to build your dashboard</p>
+              <button class="c-btn c-btn--soft c-btn--sm" id="dashRebuild" type="button"><svg class="i"><use href="#i-sparkle"/></svg>Ask AI to add insights</button>
+            </div>
+          </div>
+
+          <aside class="c-lib" id="dashLib">
+            <div class="c-lib__full">
+              <header class="c-lib__head">
+                <h4>Pinned insights <span class="c-count" id="libCount">0</span></h4>
+                <button class="c-icon-btn" id="libCollapse" type="button" aria-label="Collapse pinned insights"><svg class="i"><use href="#i-chev-left"/></svg></button>
+              </header>
+              <p class="c-lib__sub">Insights you’ve pinned. Drag one onto the Dashboard; removing it from the Dashboard keeps it here.</p>
+              <ul class="c-lib__list" id="libList"></ul>
+              <a href="#ask" class="c-btn c-btn--ghost c-btn--block c-btn--sm"><svg class="i"><use href="#i-sparkle"/></svg>Ask AI a new question</a>
+            </div>
+            <button class="c-lib__rail" id="libExpand" type="button" aria-label="Show pinned insights"><svg class="i"><use href="#i-pin"/></svg><span class="c-count" id="libCount2">0</span></button>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Sharing (interactive) -->
+  <section class="sec sec--tint share" id="share">
+    <div class="center-head">
+      <a href="#faq" class="kicker">Sharing <span class="chev">›</span></a>
+      <h2 class="h-display">Share it with the people who decide.</h2>
+    </div>
+
+    <div class="share__points">
+      <div class="share__point"><p><strong>Private until you share it.</strong> Every Dashboard starts private. Add people or groups from your workspace as viewers or editors, and revoke access any time.</p></div>
+      <div class="share__point"><p><strong>Secure links for everyone else.</strong> Create a link for people outside your workspace, with an optional expiry date, email or domain restriction, and password.</p></div>
+      <div class="share__point"><p><strong>Viewers can ask. They can’t edit.</strong> People with the link can read and open the rows. If you allow it, they can ask questions answered only from this Dashboard’s Insights.</p></div>
+    </div>
+
+    <div class="share__cta">
+      <button class="btn btn--dark btn--md js-open-share" type="button"><svg class="i"><use href="#i-share"/></svg>Open share settings</button>
+      <span class="share__cta-note">Changes you make there update the viewer preview below.</span>
+    </div>
+
+    <div class="app-window app-ui viewer" id="viewer">
+      <div class="c-browserbar">
+        <span class="c-browserbar__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="c-browserbar__url"><svg class="i"><use href="#i-lock"/></svg><span class="truncate" id="viewerUrl">centri.app/?shared=…</span></span>
+        <span class="c-browserbar__tag">What viewers see</span>
+      </div>
+      <div class="c-topbar c-topbar--shared"><span class="c-logo">Centri</span><span class="c-faint">Shared Dashboard</span></div>
+
+      <div class="viewer__notice" id="viewerNotice">No link yet. Create one in share settings to share this Dashboard outside your workspace.</div>
+
+      <div class="viewer__gate" id="viewerGate" hidden>
+        <form class="c-gate" id="gateForm" novalidate>
+          <span class="c-gate__icon"><svg class="i"><use href="#i-lock"/></svg></span>
+          <h4 id="gateTitle">Enter your email to continue</h4>
+          <p id="gateSub">The owner restricted this link.</p>
+          <input class="c-input" id="gateEmail" type="email" placeholder="you@company.com" autocomplete="off" hidden>
+          <input class="c-input" id="gatePass" type="password" placeholder="Password" autocomplete="off" hidden>
+          <p class="c-gate__err" id="gateErr" role="alert" hidden></p>
+          <button class="c-btn c-btn--primary c-btn--block" type="submit">Continue</button>
+        </form>
+      </div>
+
+      <div class="viewer__main" id="viewerMain">
+        <div class="viewer__dash">
+          <div class="c-shared-title">
+            <span class="c-shared-title__icon"><svg class="i"><use href="#i-grid"/></svg></span>
+            <div>
+              <h3 id="viewerTitle">Weekly Ops Review</h3>
+              <div class="c-shared-title__meta">Dashboard <span class="c-faint">·</span> <span id="viewerCount">4 Insights</span> <span class="c-faint">·</span> <span class="c-readonly"><svg class="i"><use href="#i-lock"/></svg>Read only</span><span id="viewerComments" hidden> <span class="c-faint">·</span> Comments on this Dashboard</span></div>
+            </div>
+          </div>
+          <div class="c-grid c-grid--viewer" id="viewerGrid"></div>
+        </div>
+
+        <aside class="c-askpanel" id="askPanel">
+          <header class="c-askpanel__head"><span class="c-askpanel__icon"><svg class="i"><use href="#i-sparkle"/></svg></span><b>Ask this Dashboard</b></header>
+          <div class="c-askpanel__log" id="askLog">
+            <div class="c-suggest" id="askSuggest">
+              <span class="c-suggest__label">Suggested questions</span>
+              <button type="button" data-q="summary">Summarize this Dashboard.</button>
+              <button type="button" data-q="store">Which store led revenue in May?</button>
+              <button type="button" data-q="channel">Where do online orders come from?</button>
+            </div>
+          </div>
+          <div class="c-askpanel__off" id="askOff">
+            <p>Questions are off for this link. The owner can turn on <b>Filtering &amp; follow-up questions</b>.</p>
+            <button class="c-btn c-btn--soft c-btn--sm js-open-share" type="button">Open share settings</button>
+          </div>
+          <div class="c-selchip" id="askSel" hidden><span>Selected: <b id="askSelName"></b></span><button type="button" id="askSelClear" aria-label="Clear selection"><svg class="i"><use href="#i-x"/></svg></button></div>
+          <form class="c-askpanel__input" id="askForm">
+            <input class="c-input" id="askInput" placeholder="Ask a follow-up question…" autocomplete="off" aria-label="Ask a follow-up question">
+            <button class="c-send" type="submit" aria-label="Send"><svg class="i"><use href="#i-arrow-up"/></svg></button>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08b Automate -->
+  <section class="sec automate" id="automate">
+    <div class="center-head">
+      <a href="#how" class="kicker">Automate <span class="chev">›</span></a>
+      <h2 class="h-display">Recurring reports that run themselves.<br>Until they need you.</h2>
+    </div>
+
+    <div class="app-window app-ui automate__app" id="auApp">
+      <div class="au-main">
+        <header class="au-head">
+          <h3>Automation</h3>
+          <p>Build AI agents, connect data, and automate workflows.</p>
+          <nav class="au-tabs" aria-label="Automation sections (illustration)">
+            <span>AI Agents</span><span class="is-on" aria-current="page">Workflows</span><span>Executions</span><span>Schedules</span><span>Templates</span><span>Settings</span>
+          </nav>
+        </header>
+
+        <div class="au-page">
+          <span class="au-back"><svg class="i"><use href="#i-arrow-left"/></svg>Back to workflows</span>
+
+          <div class="au-card">
+            <div class="au-bar">
+              <div class="au-bar__title">
+                <b><span id="auTitle">Monday revenue report</span> <svg class="i"><use href="#i-pencil"/></svg></b>
+                <span class="au-bar__meta"><span class="au-state" id="auState"><i></i><span id="auStateTxt">Draft</span><svg class="i"><use href="#i-chev-down"/></svg></span><span class="au-sep" aria-hidden="true"></span><span id="auSaved">Last saved 2 minutes ago</span></span>
+              </div>
+              <div class="au-bar__actions">
+                <span class="au-btn au-btn--icon" aria-hidden="true"><svg class="i"><use href="#i-more"/></svg></span>
+                <button type="button" class="au-btn" id="auSave"><svg class="i"><use href="#i-save"/></svg>Save</button>
+                <button type="button" class="au-btn au-btn--primary" id="flowRun" aria-disabled="true"><svg class="i"><use href="#i-play"/></svg><span id="flowRunTxt">Activate</span></button>
+              </div>
+            </div>
+
+            <div class="au-canvas" id="auCanvas" data-state="empty">
+              <div class="au-tools">
+                <span class="au-tool-group">
+                  <button type="button" class="au-tool" id="auUndo" aria-label="Undo" disabled><svg class="i"><use href="#i-undo"/></svg></button>
+                  <button type="button" class="au-tool" id="auRedo" aria-label="Redo" disabled><svg class="i"><use href="#i-redo"/></svg></button>
+                </span>
+                <span class="au-tool-group">
+                  <button type="button" class="au-tool" data-zoom="-1" aria-label="Zoom out"><svg class="i"><use href="#i-minus"/></svg></button>
+                  <span class="au-zoom" id="auZoom">100%</span>
+                  <button type="button" class="au-tool" data-zoom="1" aria-label="Zoom in"><svg class="i"><use href="#i-plus"/></svg></button>
+                </span>
+                <span class="au-tool-group">
+                  <button type="button" class="au-tool" data-zoom="0" aria-label="Fit to screen"><svg class="i"><use href="#i-fit"/></svg></button>
+                </span>
+              </div>
+
+              <div class="au-empty" id="auEmpty">
+                <button type="button" class="au-empty__node" id="auAddTrigger" aria-label="Add a trigger">
+                  <svg class="i"><use href="#i-bolt"/></svg>
+                  <span class="au-empty__plus"><svg class="i"><use href="#i-plus"/></svg></span>
+                </button>
+                <b>Trigger</b>
+                <span>Add a trigger to start your workflow</span>
+                <i class="au-empty__stub" aria-hidden="true"></i>
+                <p class="au-tpls-label">Or start from a template</p>
+                <div class="au-tpls">
+                  <button type="button" class="au-tpl" data-name="Monday revenue report" data-t="Schedule trigger" data-m="Every Monday · 8:00" data-icon="i-clock" data-brand="#5741d8">
+                    <span class="au-trig__logo" style="--brand:#5741d8"><svg class="i"><use href="#i-clock"/></svg></span>
+                    <span class="au-tpl__txt"><b>Monday revenue report</b><em>6 steps · Schedule</em></span>
+                  </button>
+                  <button type="button" class="au-tpl" data-name="Refund spike alert" data-t="Metric alert" data-m="Refund rate above 3%" data-icon="i-bolt" data-brand="#d97706">
+                    <span class="au-trig__logo" style="--brand:#d97706"><svg class="i"><use href="#i-bolt"/></svg></span>
+                    <span class="au-tpl__txt"><b>Refund spike alert</b><em>6 steps · Metric alert</em></span>
+                  </button>
+                  <button type="button" class="au-tpl" data-name="Daily sales digest" data-t="New row in Retail Sales" data-m="Google Sheets" data-icon="lg-sheets" data-brand="#34A853">
+                    <span class="au-trig__logo" style="--brand:#34A853"><svg class="lg"><use href="#lg-sheets"/></svg></span>
+                    <span class="au-tpl__txt"><b>Daily sales digest</b><em>6 steps · Google Sheets</em></span>
+                  </button>
+                </div>
+              </div>
+
+              <button type="button" class="au-btn au-replay" id="auReplay" hidden><svg class="i"><use href="#i-play"/></svg>Replay demo</button>
+
+              <div class="au-stage">
+                <div class="flow" id="flowCanvas" hidden>
+                  <svg class="flow__edges" id="flowEdges" aria-hidden="true"></svg>
+                  <button type="button" class="flow-node flow-node--trigger" data-step="0" id="flowTrigger" aria-label="Change trigger">
+                    <span class="flow-node__icon" id="flowTriggerIcon"><svg class="i"><use href="#i-clock"/></svg></span>
+                    <span class="flow-node__txt"><b id="flowTriggerName">Schedule trigger</b><em id="flowTriggerMeta">Every Monday · 8:00</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                  </button>
+                  <div class="flow-node" data-step="1" data-label="1,284 rows">
+                    <span class="flow-node__icon"><svg class="i"><use href="#i-refresh"/></svg></span>
+                    <span class="flow-node__txt"><b>Refresh Retail Sales</b><em>Google Sheets</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                  </div>
+                  <div class="flow-node" data-step="2" data-label="4 Insights">
+                    <span class="flow-node__icon"><svg class="i"><use href="#i-grid"/></svg></span>
+                    <span class="flow-node__txt"><b>Recompute Insights</b><em>Weekly Ops Review</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                  </div>
+                  <div class="flow-node flow-node--ai" data-step="3" data-label="1 draft">
+                    <span class="flow-node__icon"><svg class="i"><use href="#i-sparkle"/></svg></span>
+                    <span class="flow-node__txt"><b>Draft summary <i class="flow-tag">AI</i></b><em>For leadership</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                  </div>
+                  <div class="flow-node flow-node--human" data-step="4" data-label="Approved">
+                    <span class="flow-node__icon"><svg class="i"><use href="#i-users"/></svg></span>
+                    <span class="flow-node__txt"><b>You review</b><em>Dana R.</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                    <button type="button" class="flow-approve" id="flowApprove" hidden>Approve</button>
+                  </div>
+                  <div class="flow-node" data-step="5">
+                    <span class="flow-node__icon"><svg class="i"><use href="#i-mail"/></svg></span>
+                    <span class="flow-node__txt"><b>Send to leadership</b><em>Email · 4 recipients</em></span>
+                    <span class="flow-node__badge" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="au-mini">
+                <b>Workflow overview</b>
+                <svg class="au-mini__map" id="auMini" aria-hidden="true"></svg>
+                <span class="au-mini__tools">
+                  <button type="button" class="au-tool" data-zoom="0" aria-label="Reset view"><svg class="i"><use href="#i-expand"/></svg></button>
+                  <span class="au-tool-group">
+                    <button type="button" class="au-tool" data-zoom="-1" aria-label="Zoom out"><svg class="i"><use href="#i-minus"/></svg></button>
+                    <button type="button" class="au-tool" data-zoom="0" aria-label="Fit to screen"><svg class="i"><use href="#i-fit"/></svg></button>
+                    <button type="button" class="au-tool" data-zoom="1" aria-label="Zoom in"><svg class="i"><use href="#i-plus"/></svg></button>
+                  </span>
+                </span>
+              </div>
+
+              <div class="flow__log"><span class="flow__dot" aria-hidden="true"></span><span id="flowStatus" aria-live="polite">Pick a trigger to start</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="au-panel" id="auPanel" aria-label="Choose a trigger">
+        <header class="au-panel__head">
+          <span class="au-panel__icon"><svg class="i"><use href="#i-bolt"/></svg></span>
+          <span class="au-panel__title"><b>Trigger</b><em>Choose what starts this workflow.</em></span>
+          <button type="button" class="au-tool" id="auPanelClose" aria-label="Close trigger panel"><svg class="i"><use href="#i-x"/></svg></button>
+        </header>
+        <label class="au-search"><svg class="i"><use href="#i-search"/></svg><input id="auSearch" type="search" placeholder="Search triggers…" autocomplete="off" aria-label="Search triggers"></label>
+
+        <div class="au-panel__scroll">
+          <span class="au-label" data-group="rec">Recommended</span>
+          <div class="au-rec" data-group="rec">
+            <button type="button" class="au-trig" data-t="Schedule trigger" data-m="Every Monday · 8:00" data-icon="i-clock" data-brand="#5741d8">
+              <span class="au-trig__logo" style="--brand:#5741d8"><svg class="i"><use href="#i-clock"/></svg></span>
+              <span class="au-trig__txt"><b>Schedule</b><em>Runs on a specific schedule</em></span>
+              <span class="au-badge">Recommended</span>
+            </button>
+            <button type="button" class="au-trig" data-t="New row in Retail Sales" data-m="Google Sheets" data-icon="lg-sheets" data-brand="#34A853">
+              <span class="au-trig__logo" style="--brand:#34A853"><svg class="lg"><use href="#lg-sheets"/></svg></span>
+              <span class="au-trig__txt"><b>New spreadsheet row</b><em>Triggers when a row is added to a sheet</em></span>
+            </button>
+            <button type="button" class="au-trig" data-t="New email" data-m="Gmail · reports@" data-icon="lg-gmail" data-brand="#EA4335">
+              <span class="au-trig__logo" style="--brand:#EA4335"><svg class="lg"><use href="#lg-gmail"/></svg></span>
+              <span class="au-trig__txt"><b>New Email</b><em>Triggers when you receive a new email</em></span>
+            </button>
+            <button type="button" class="au-trig" data-t="Metric alert" data-m="Refund rate above 3%" data-icon="i-bolt" data-brand="#d97706">
+              <span class="au-trig__logo" style="--brand:#d97706"><svg class="i"><use href="#i-bolt"/></svg></span>
+              <span class="au-trig__txt"><b>Metric alert</b><em>Triggers when a number crosses a threshold</em></span>
+            </button>
+          </div>
+
+          <span class="au-label au-label--rule" data-group="all">All triggers</span>
+          <div class="au-all" data-group="all">
+            <button type="button" class="au-row" data-t="New row in Retail Sales" data-m="Google Sheets" data-icon="lg-sheets" data-brand="#34A853"><svg class="lg" style="--brand:#34A853"><use href="#lg-sheets"/></svg><span>Google Sheets</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="New file in Sales" data-m="Excel" data-icon="lg-excel" data-brand="#107C41"><svg class="lg" style="--brand:#107C41"><use href="#lg-excel"/></svg><span>Excel</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="New email" data-m="Gmail · reports@" data-icon="lg-gmail" data-brand="#EA4335"><svg class="lg" style="--brand:#EA4335"><use href="#lg-gmail"/></svg><span>Email</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="New payment" data-m="Stripe" data-icon="lg-stripe" data-brand="#635BFF"><svg class="lg" style="--brand:#635BFF"><use href="#lg-stripe"/></svg><span>Stripe</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="Deal closed" data-m="HubSpot" data-icon="lg-hubspot" data-brand="#FF7A59"><svg class="lg" style="--brand:#FF7A59"><use href="#lg-hubspot"/></svg><span>HubSpot</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="New ticket" data-m="Zendesk" data-icon="lg-zendesk" data-brand="#03363D"><svg class="lg" style="--brand:#03363D"><use href="#lg-zendesk"/></svg><span>Zendesk</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="New table rows" data-m="BigQuery" data-icon="lg-bigquery" data-brand="#4285F4"><svg class="lg" style="--brand:#4285F4"><use href="#lg-bigquery"/></svg><span>BigQuery</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="Webhook" data-m="POST /hooks/revenue" data-icon="i-link" data-brand="#686b82"><svg class="i"><use href="#i-link"/></svg><span>Webhook</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+            <button type="button" class="au-row" data-t="Schedule trigger" data-m="Every Monday · 8:00" data-icon="i-clock" data-brand="#5741d8"><svg class="i"><use href="#i-grid"/></svg><span>Other Apps</span><svg class="i au-row__chev"><use href="#i-chev-right"/></svg></button>
+          </div>
+          <p class="au-none" id="auNone" hidden>No triggers match. Try “sheet” or “email”.</p>
+        </div>
+
+        <div class="au-ai">
+          <b>Not sure which trigger?</b>
+          <span>Describe what you want to automate and AI will suggest the best trigger.</span>
+          <button type="button" class="au-btn" id="auAskAi"><svg class="i"><use href="#i-sparkle"/></svg>Ask AI</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 09 Human review -->
+  <section class="sec sec--flush review">
+    <div class="review__copy">
+      <h2 class="h-section">Human review, built in.</h2>
+      <p class="h-section h-section--muted">Nothing leaves Centri without you.</p>
+      <a href="#how" class="btn btn--soft btn--md">See how it works</a>
+
+      <div class="review__points">
+        <div>
+          <h3 class="point__title">You confirm definitions once</h3>
+          <p class="point__body">Centri writes how a number is counted in plain language. You confirm it, and it stays that way until you change it.</p>
+        </div>
+        <div>
+          <h3 class="point__title">You review before anything is sent</h3>
+          <p class="point__body">Workflows draft the recurring report for you, then wait. A person approves anything that leaves Centri.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="review__art" aria-hidden="true">
+      <div class="dark-card app-ui">
+        <div class="dark-card__head"><span>Automate / Monday revenue report</span><span>Mon 8:00</span></div>
+        <div class="dark-step"><span>1</span>Refresh Retail Sales<i>✓</i></div>
+        <div class="dark-step"><span>2</span>Recompute Insights on Weekly Ops Review<i>✓</i></div>
+        <div class="dark-step"><span>3</span>Draft summary for leadership<i>✓</i></div>
+        <div class="dark-step dark-step--on"><span>4</span>You review the draft before it goes out<b>Review draft<span class="cursor"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M4 2l16 9-7 2-3 7z" fill="#0b0b0c" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg><em>You</em></span></b></div>
+        <div class="dark-step dark-step--wait"><span>5</span>Send to leadership list<i>Waiting</i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Why Centri -->
+  <section class="sec why">
+    <div class="narrow-head narrow-head--left">
+      <a href="#faq" class="kicker">Why Centri <span class="chev">›</span></a>
+      <h2 class="h-display h-display--left">You’ve probably tried<br>one of these already.</h2>
+    </div>
+
+    <!-- PLACEHOLDER: testimonials are illustrative. Names, roles and quotes are placeholders, and the portrait photos are AI-generated (StyleGAN, not real people). Replace with approved customer quotes, attribution and photos before publishing. -->
+    <div class="why__marquee">
+      <div class="why__row">
+        <div class="why__track">
+          <figure class="why__item">
+            <span class="why__tag">Tried a BI dashboard</span>
+            <blockquote class="why__quote">“Every new question turned into a ticket. The dashboard only answered what someone had already modeled.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/maya.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Maya R.</strong> Operations Lead, retail brand</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried a spreadsheet</span>
+            <blockquote class="why__quote">“We ran everything in spreadsheets. Flexible, sure, but no one could tell at a glance if a number was right.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/daniel.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Daniel K.</strong> Finance Manager, 40-person company</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried a general AI assistant</span>
+            <blockquote class="why__quote">“The chatbot sounded confident, but it had no idea how we actually define revenue.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/priya.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Priya S.</strong> Founder, DTC brand</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried an automation tool</span>
+            <blockquote class="why__quote">“Our automations moved data between tools all day without understanding any of it.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/tom.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Tom L.</strong> RevOps Lead, B2B SaaS</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried CRM reports</span>
+            <blockquote class="why__quote">“Our CRM showed pipeline three different ways. Every forecast call started with arguing over whose number was right.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/diego.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Diego M.</strong> Head of Sales, logistics company</span></figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="why__row">
+        <div class="why__track">
+          <figure class="why__item">
+            <span class="why__tag">Tried a reporting agency</span>
+            <blockquote class="why__quote">“The agency sent a polished deck every month. By the time it landed the numbers were stale, and no one could trace them back.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/helen.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Helen B.</strong> CFO, manufacturing group</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried the analyst queue</span>
+            <blockquote class="why__quote">“Our analysts were great, but the queue was three weeks long. By the time an answer came back, the question had changed.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/omar.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Omar H.</strong> BizOps Manager, online marketplace</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried rebuilding reports by hand</span>
+            <blockquote class="why__quote">“Every Monday I rebuilt the same board report from five exports. One broken formula and the whole week started wrong.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/ana.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Ana P.</strong> Chief of Staff, fintech startup</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried an off-the-shelf analytics app</span>
+            <blockquote class="why__quote">“It had a hundred charts and zero definitions. When a number moved, nobody could show me the rows behind it.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/ruth.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Ruth W.</strong> COO, clinic network</span></figcaption>
+          </figure>
+          <figure class="why__item">
+            <span class="why__tag">Tried pasting exports into an AI chat</span>
+            <blockquote class="why__quote">“I pasted exports into an AI chat every week. The answer changed each time, and none of them cited a source.”</blockquote>
+            <figcaption class="why__who"><img class="why__avatar" src="img/people/emma.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><strong>Emma J.</strong> Marketing Ops Manager, e-commerce brand</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="why__centri">
+      <span class="brand brand--lg"><img class="brand__logo" src="img/logo.webp" alt="" width="30" height="30"><span class="brand__name">Centri</span></span>
+      <p>Ask a new business question in plain language, with the definition and source data behind the answer.</p>
+    </div>
+  </section>
+
+  <!-- 11 FAQ -->
+  <section class="sec sec--tint faq" id="faq">
+    <div class="center-head">
+      <a href="#trust" class="kicker">Questions <span class="chev">›</span></a>
+      <h2 class="h-display">Before you ask.</h2>
+    </div>
+
+    <div class="faq__list">
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="true"><span>Do I need an engineer or a data warehouse?</span><span class="faq__sign">−</span></button>
+        <div class="faq__a"><p>No. Spreadsheets and exports are the primary input. Centri profiles and structures them for you, and asks about anything ambiguous.</p></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false"><span>What does this cost?</span><span class="faq__sign">+</span></button>
+        <div class="faq__a" hidden>
+          <div class="placeholder"><span class="placeholder__label">PLACEHOLDER · PRD Q-7</span><span>Commercial model not yet decided. Replace with an approved answer before publishing.</span></div>
+        </div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false"><span>How is my data handled?</span><span class="faq__sign">+</span></button>
+        <div class="faq__a" hidden>
+          <div class="placeholder"><span class="placeholder__label">PLACEHOLDER · PRD Q-4</span><span>Requires a real answer cleared by Security and Legal. Do not publish without it.</span></div>
+        </div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false"><span>Is this just another AI wrapper?</span><span class="faq__sign">+</span></button>
+        <div class="faq__a" hidden><p>No. The AI writes the definition and explains the result; it never touches raw data or does the arithmetic. Every number is computed directly from your data and can be inspected down to the row.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 12 Final CTA -->
+<section class="final">
+  <div class="final__card">
+    <div class="final__dots" aria-hidden="true"></div>
+    <h2 class="h-display">See what your own data says.<br>Bring the spreadsheet you’re tired of rebuilding.</h2>
+    <button class="btn btn--dark btn--lg js-open-modal">Request Access</button>
+  </div>
+</section>
+
+<!-- 13 Footer -->
+<footer class="footer">
+  <div class="footer__cols">
+    <div class="footer__col">
+      <span class="footer__head">Product</span>
+      <a href="#product">Connect</a>
+      <a href="#ask">Ask</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#share">Sharing</a>
+      <a href="#how">Workflows</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__head">Learn</span>
+      <a href="#how">How it works</a>
+      <a href="#trust">Trust</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__head">Company</span>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <div class="footer__col footer__col--brand">
+      <span class="brand"><img class="brand__logo" src="img/logo.webp" alt="" width="30" height="30"><span class="brand__name">Centri</span></span>
+      <span class="faint">© 2026 Centri</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Share dialog (Centri app, verbatim copy from ShareDialog) -->
+<div class="c-overlay" id="shareOverlay" hidden>
+  <div class="c-dialog app-ui" id="shareDialog" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <header class="c-dialog__head">
+      <div>
+        <h3 id="shareTitle">Share this Dashboard</h3>
+        <p>Control who can access and what they can do.</p>
+      </div>
+      <button class="c-icon-btn" id="shareClose" type="button" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </header>
+
+    <div class="c-dialog__body">
+      <div class="c-field">
+        <label for="shareVis">Visibility</label>
+        <select class="c-select c-select--block" id="shareVis">
+          <option value="private">Private — only you</option>
+          <option value="workspace">Workspace — everyone in this workspace</option>
+          <option value="restricted">Restricted — only people/groups shared below</option>
+        </select>
+      </div>
+
+      <section class="c-share-sec">
+        <h4>People &amp; groups</h4>
+        <p>Add people or groups in this workspace.</p>
+        <form class="c-add-row" id="shareAddForm" novalidate>
+          <select class="c-select" id="shareKind" aria-label="Person or group"><option>Person</option><option>Group</option></select>
+          <input class="c-input" id="shareName" placeholder="Enter name or email…" autocomplete="off" aria-label="Name or email">
+          <select class="c-select" id="shareAccess" aria-label="Access"><option>Can view</option><option>Can edit</option></select>
+          <button class="c-btn c-btn--primary c-btn--sm" type="submit">Add</button>
+        </form>
+        <ul class="c-people" id="sharePeople"></ul>
+      </section>
+
+      <section class="c-share-sec">
+        <h4>Additional settings</h4>
+        <div class="c-setting">
+          <button class="c-setting__row" id="linkRowToggle" type="button" aria-expanded="false" aria-controls="linkPanel">
+            <span class="c-setting__txt"><b><svg class="i"><use href="#i-link"/></svg>Link sharing</b><em>Create a secure link to share with people outside your workspace.</em></span>
+            <span class="c-setting__meta" id="linkSummary">No links · Manage ›</span>
+          </button>
+          <div class="c-link-panel" id="linkPanel" hidden>
+            <form class="c-link-form" id="linkForm" novalidate>
+              <label class="c-field">Expires (optional)<input class="c-input" type="date" id="linkExpires"></label>
+              <label class="c-field">Restrict to an email or domain (optional)<input class="c-input" id="linkRestrict" placeholder="name@company.com or @company.com" autocomplete="off"></label>
+              <label class="c-field">Password (optional)<input class="c-input" type="password" id="linkPass" autocomplete="new-password"></label>
+              <button class="c-btn c-btn--primary c-btn--sm" type="submit">Create link</button>
+            </form>
+            <div class="c-link-new" id="linkNew" hidden>
+              <div class="c-link-url"><svg class="i"><use href="#i-link"/></svg><code class="truncate" id="linkUrl"></code><button class="c-btn c-btn--soft c-btn--sm" id="copyLink" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy link</button></div>
+              <p class="c-note">This link’s token is shown only once — copy it now.</p>
+            </div>
+            <ul class="c-links" id="linkList"></ul>
+          </div>
+        </div>
+        <div class="c-setting">
+          <div class="c-setting__row">
+            <span class="c-setting__txt"><b>Comments &amp; interactions</b><em>Let viewers leave comments and interact with this Dashboard.</em></span>
+            <button class="c-toggle" id="togComments" type="button" role="switch" aria-checked="false" aria-label="Comments & interactions"></button>
+          </div>
+        </div>
+        <div class="c-setting">
+          <div class="c-setting__row">
+            <span class="c-setting__txt"><b>Filtering &amp; follow-up questions</b><em>Let external viewers filter this Dashboard and ask questions about it. Answers use only this Dashboard’s Insights. Off by default — turning link sharing on does not turn this on.</em></span>
+            <button class="c-toggle" id="togFollow" type="button" role="switch" aria-checked="false" aria-label="Filtering & follow-up questions"></button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="c-dialog__foot">Changes you make here apply to this Dashboard only.</footer>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="c-toasts app-ui" id="toasts" aria-live="polite"></div>
+
+<!-- Request access modal -->
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal__close" id="modalClose" aria-label="Close">×</button>
+
+    <form class="modal__form" id="requestForm">
+      <div>
+        <h3 class="modal__title" id="modalTitle">Request access</h3>
+        <p class="modal__sub">Tell us a little about you and the report you rebuild most.</p>
+      </div>
+      <label class="field">Name<input required name="name" autocomplete="name"></label>
+      <label class="field">Work email<input required type="email" name="email" autocomplete="email"></label>
+      <div class="field-row">
+        <label class="field">Company<input name="company" autocomplete="organization"></label>
+        <label class="field">Role<input name="role" placeholder="e.g. Head of Ops"></label>
+      </div>
+      <label class="field">Which report are you most tired of rebuilding?<textarea rows="3" name="report"></textarea></label>
+      <button type="submit" class="btn btn--dark btn--block">Request Access</button>
+    </form>
+
+    <div class="modal__sent" id="modalSent" hidden>
+      <span class="chip chip--green">Request received</span>
+      <h3 class="modal__title">Thanks. We’ll be in touch.</h3>
+      <p class="modal__sub">We’ll reply to the email you gave us. Keep that spreadsheet handy.</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/script.js?v=8"></script>
+</body>
+</html>
