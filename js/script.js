@@ -1530,7 +1530,7 @@
     });
   });
 
-  // ---------- Request access modal ----------
+  // ---------- Request a demo modal ----------
   const modalOverlay = $('modalOverlay');
   const modal = $('modal');
   const requestForm = $('requestForm');
