@@ -1586,7 +1586,7 @@
   const revealGroups = [
     '.frame-col .center-head', '.frame-col .narrow-head', '.intro__grid > *', '.tile-wall', '.body-narrow',
     '.trust__panel', '.segmented', '.ask__stage', '.cards-4 > *', '.demo-hint', '.dash', '.share__points > *',
-    '.share__cta', '.viewer', '.automate__app', '.review__copy', '.review__art', '.why__marquee', '.why__centri', '.faq__list', '.final__card'
+    '.share__cta', '.viewer', '.automate__app', '.review__copy', '.review__art', '.why__marquee', '.faq__list', '.final__card'
   ];
   const revealEls = [];
   revealGroups.forEach(sel => {
