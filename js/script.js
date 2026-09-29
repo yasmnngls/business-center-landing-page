@@ -409,17 +409,6 @@
   $('libCollapse').addEventListener('click', () => { $('dashLib').classList.add('is-collapsed'); $('libExpand').focus(); });
   $('libExpand').addEventListener('click', () => { $('dashLib').classList.remove('is-collapsed'); $('libCollapse').focus(); });
 
-  // The viewer's Ask panel takes the Pinned insights panel's height (side-by-side layouts only, in CSS).
-  // Only a side-by-side measurement counts: the stacked strip is shorter, and a collapsed library
-  // measures 0, so the last side-by-side height is kept until a new one exists.
-  const libFull = document.querySelector('#dashLib .c-lib__full');
-  const sideBySide = window.matchMedia('(min-width: 1081px)');
-  if (libFull && 'ResizeObserver' in window) {
-    new ResizeObserver(() => {
-      if (sideBySide.matches && libFull.offsetHeight) $('askPanel').style.setProperty('--lib-h', libFull.offsetHeight + 'px');
-    }).observe(libFull);
-  }
-
   $('dashRebuild').addEventListener('click', () => {
     defaultBoard.forEach((id, i) => setTimeout(() => addCard(id, true), i * 60));
     toast('Added 4 Insights');
@@ -648,7 +637,6 @@
     const link = activeLink();
     const gate = gatedLink();
     $('viewerUrl').textContent = link ? link.url : 'centri.app/?shared=…';
-    $('viewerNotice').hidden = !!link;
 
     const showGate = !!gate && !state.gatePassed;
     $('viewerGate').hidden = !showGate;
@@ -1598,7 +1586,7 @@
   const revealGroups = [
     '.frame-col .center-head', '.frame-col .narrow-head', '.intro__grid > *', '.tile-wall', '.body-narrow',
     '.trust__panel', '.segmented', '.ask__stage', '.cards-4 > *', '.demo-hint', '.dash', '.share__points > *',
-    '.share__cta', '.viewer', '.automate__app', '.review__copy', '.review__art', '.why__marquee', '.why__centri', '.faq__list', '.final__card'
+    '.share__cta', '.viewer', '.automate__app', '.review__copy', '.review__art', '.why__marquee', '.faq__list', '.final__card'
   ];
   const revealEls = [];
   revealGroups.forEach(sel => {

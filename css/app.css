@@ -343,7 +343,7 @@
 
 /* Pinned insights library */
 .c-lib { flex: 0 0 272px; display: flex; flex-direction: column; min-height: 0; }
-.c-lib__full { background: #fff; border: 1px solid var(--c-line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.c-lib__full { flex: 1; background: #fff; border: 1px solid var(--c-line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .c-lib__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .c-lib__head h4 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; }
 .c-lib__sub { margin: 0; font-size: 12px; color: var(--c-mut); line-height: 1.5; }
@@ -366,7 +366,7 @@
 .c-lib__rail { display: none; }
 .c-lib.is-collapsed { flex-basis: 48px; }
 .c-lib.is-collapsed .c-lib__full { display: none; }
-.c-lib.is-collapsed .c-lib__rail { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 0; border: 1px solid var(--c-line); border-radius: 12px; background: #fff; color: var(--c-mut); box-shadow: var(--c-sh); transition: color 150ms ease; }
+.c-lib.is-collapsed .c-lib__rail { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 0; border: 1px solid var(--c-line); border-radius: 12px; background: #fff; color: var(--c-mut); box-shadow: var(--c-sh); transition: color 150ms ease; }
 .c-lib__rail:hover { color: var(--c-accent); }
 
 /* =====================================================================
@@ -387,7 +387,6 @@
 .c-browserbar__url .i { width: 12px; height: 12px; color: var(--c-green); }
 .c-browserbar__tag { flex: none; font-size: 11.5px; font-weight: 600; color: var(--c-accent-ink); background: var(--c-accent-soft); padding: 3px 9px; border-radius: 99px; }
 .c-topbar--shared { justify-content: space-between; padding: 0 24px; }
-.viewer__notice { padding: 10px 24px; background: #fff8e8; border-bottom: 1px solid #f3e3bd; font-size: 12.5px; color: #7a5410; }
 .viewer__main { flex: 1; display: flex; min-height: 0; }
 .viewer__dash { flex: 1; min-width: 0; padding: 26px 28px 32px; }
 .c-shared-title { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
@@ -409,9 +408,10 @@
 
 /* Ask this Dashboard panel (PublicBoardView) */
 .c-askpanel { flex: 0 0 340px; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--c-line); min-height: 0; max-height: 680px; }
-/* Side by side, the Ask panel matches the Dashboard's Pinned insights panel (--lib-h is set in JS) */
+/* Side by side, the Ask panel spans the viewer's full height. contain: size stops its log from
+   growing the viewer, so a long thread scrolls inside the panel instead. */
 @media (min-width: 1081px) {
-  .c-askpanel { height: var(--lib-h, 680px); max-height: none; /* 680px = the old cap, if no side-by-side height was ever measured */ align-self: flex-start; }
+  .c-askpanel { max-height: none; contain: size; }
 }
 .c-askpanel__head { display: flex; align-items: center; gap: 8px; padding: 16px 18px; border-bottom: 1px solid var(--c-line); font-size: 15px; }
 .c-askpanel__icon { width: 28px; height: 28px; border-radius: 8px; background: var(--c-accent); color: #fff; display: grid; place-items: center; }
@@ -946,7 +946,8 @@ button.flow-node:active { transform: scale(0.98); }
 @media (max-width: 1080px) {
   .dash__body { flex-direction: column; }
   .c-lib, .c-lib.is-collapsed { flex-basis: auto; }
-  .c-lib.is-collapsed .c-lib__rail { flex-direction: row; justify-content: center; padding: 10px; }
+  .c-lib__full { flex: none; }
+  .c-lib.is-collapsed .c-lib__rail { flex: none; flex-direction: row; justify-content: center; padding: 10px; }
   .c-lib__list { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
   .c-lib__item { flex: 0 0 240px; }
   .viewer__main { flex-direction: column; }

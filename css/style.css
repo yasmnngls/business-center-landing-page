@@ -88,12 +88,9 @@ section[id] { scroll-margin-top: 72px; }
 }
 .brand__mark span { width: 8px; height: 8px; border-radius: 2.5px; background: #fff; }
 .brand__logo { width: 30px; height: 30px; flex: none; display: block; }
-.brand--lg .brand__logo { width: 34px; height: 34px; }
 .brand__mark--xs { width: 16px; height: 16px; border-radius: 5px; }
 .brand__mark--xs span { width: 5px; height: 5px; border-radius: 1.5px; }
 .brand__name { font-family: var(--font-display); font-weight: 600; font-size: 24px; letter-spacing: -0.02em; }
-.brand--lg .brand__mark { width: 30px; height: 30px; }
-.brand--lg .brand__name { font-size: 28px; }
 
 /* ============ Buttons & chips ============ */
 .btn {
@@ -129,8 +126,7 @@ section[id] { scroll-margin-top: 72px; }
 .chip-link:hover { background: rgba(255, 255, 255, 0.6); }
 .chev { font-size: 1.15em; line-height: 1; transform: translateY(-1px); display: inline-block; }
 
-.kicker { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
-.kicker:hover { opacity: .8; }
+.kicker { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--accent); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
 
 .link-dotted { color: var(--accent); border-bottom: 1.5px dotted currentColor; }
 
@@ -598,12 +594,6 @@ section[id] { scroll-margin-top: 72px; }
 .why__who { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.4; color: var(--muted); }
 .why__who strong { display: block; color: var(--ink); font-weight: 500; }
 .why__avatar { flex: none; display: block; width: 40px; height: 40px; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--accent-tint); box-shadow: 0 0 0 1px rgba(15, 23, 42, .08); }
-.why__centri {
-  margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px;
-  padding: 28px clamp(20px, 3vw, 36px); border-radius: var(--r-lg); background: var(--accent-tint);
-}
-.why__centri .brand__name { color: var(--accent); }
-.why__centri p { flex: 1 1 320px; margin: 0; font-size: clamp(18px, 1.8vw, 22px); font-weight: 500; line-height: 1.45; letter-spacing: -0.01em; }
 
 /* ============ 09 FAQ ============ */
 .faq__list { max-width: 820px; margin: clamp(40px, 5vw, 64px) auto 0; border-bottom: 1px solid var(--line); }
@@ -629,17 +619,37 @@ section[id] { scroll-margin-top: 72px; }
   padding: clamp(80px, 11vw, 150px) var(--gutter); text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 36px;
   background:
-    radial-gradient(60% 75% at 50% 110%, #5b1ecf 0%, #7132f5 30%, rgba(150,110,255,.6) 55%, rgba(230,222,255,0) 80%),
     radial-gradient(50% 60% at 0% 100%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
     radial-gradient(50% 60% at 100% 100%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
     linear-gradient(180deg, #f0ebff 0%, #e3d9ff 100%);
 }
+/* The glow is its own layer so hover can grow it with transform alone */
+.final__card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 75% at 50% 110%, #5b1ecf 0%, #7132f5 30%, rgba(150,110,255,.6) 55%, rgba(230,222,255,0) 80%);
+  transform-origin: 50% 100%;
+  transition: transform var(--dur-dialog) var(--ease-out);
+}
 .final__dots {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: radial-gradient(rgba(255,255,255,.75) 1.4px, transparent 1.6px);
+  background-image: radial-gradient(rgba(255,255,255,.9) 1.4px, transparent 1.6px);
   background-size: 22px 22px;
   -webkit-mask-image: radial-gradient(70% 70% at 50% 100%, #000 10%, transparent 75%);
   mask-image: radial-gradient(70% 70% at 50% 100%, #000 10%, transparent 75%);
+  opacity: .83; /* .9 × .83 ≈ the old .75 dots at rest */
+  transition: opacity var(--dur-dialog) var(--ease-out), transform var(--dur-dialog) var(--ease-out);
+}
+/* Hover (or keyboard focus on the button): the glow rises and the dot grid brightens */
+@media (hover: hover) and (pointer: fine) {
+  .final__card:hover::before { transform: scale(1.08, 1.14); }
+  .final__card:hover .final__dots { opacity: 1; transform: translateY(-6px); }
+}
+.final__card:has(.btn:focus-visible)::before { transform: scale(1.08, 1.14); }
+.final__card:has(.btn:focus-visible) .final__dots { opacity: 1; transform: translateY(-6px); }
+@media (prefers-reduced-motion: reduce) {
+  .final__card::before { transition: none; }
+  .final__card:hover::before, .final__card:has(.btn:focus-visible)::before { transform: none; }
+  .final__card:hover .final__dots, .final__card:has(.btn:focus-visible) .final__dots { transform: none; }
 }
 .final__card .h-display, .final__card .btn { position: relative; }
 
