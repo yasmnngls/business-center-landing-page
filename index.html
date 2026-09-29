@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=34">
-<link rel="stylesheet" href="css/app.css?v=34">
+<link rel="stylesheet" href="css/style.css?v=35">
+<link rel="stylesheet" href="css/app.css?v=35">
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -547,19 +547,15 @@
           <div class="c-grid c-grid--viewer" id="viewerGrid"></div>
         </div>
 
-        <aside class="c-askpanel" id="askPanel">
+        <aside class="c-askpanel" id="askPanel" aria-label="Ask this Dashboard">
           <header class="c-askpanel__head"><span class="c-askpanel__icon"><svg class="i"><use href="#i-sparkle"/></svg></span><b>Ask this Dashboard</b></header>
-          <div class="c-askpanel__log" id="askLog">
+          <div class="c-askpanel__log" id="askLog" aria-live="polite">
             <div class="c-suggest" id="askSuggest">
               <span class="c-suggest__label">Suggested questions</span>
               <button type="button" data-q="summary">Summarize this Dashboard.</button>
               <button type="button" data-q="store">Which store led revenue in May?</button>
               <button type="button" data-q="channel">Where do online orders come from?</button>
             </div>
-          </div>
-          <div class="c-askpanel__off" id="askOff">
-            <p>Questions are off for this link. The owner can turn on <b>Filtering &amp; follow-up questions</b>.</p>
-            <button class="c-btn c-btn--soft c-btn--sm js-open-share" type="button">Open share settings</button>
           </div>
           <div class="c-selchip" id="askSel" hidden><span>Selected: <b id="askSelName"></b></span><button type="button" id="askSelClear" aria-label="Clear selection"><svg class="i"><use href="#i-x"/></svg></button></div>
           <form class="c-askpanel__input" id="askForm">
@@ -992,7 +988,7 @@
         <div class="c-setting">
           <div class="c-setting__row">
             <span class="c-setting__txt"><b>Filtering &amp; follow-up questions</b><em>Let external viewers filter this Dashboard and ask questions about it. Answers use only this Dashboard’s Insights. Off by default — turning link sharing on does not turn this on.</em></span>
-            <button class="c-toggle" id="togFollow" type="button" role="switch" aria-checked="false" aria-label="Filtering & follow-up questions"></button>
+            <button class="c-toggle" id="togFollow" type="button" role="switch" aria-checked="true" aria-label="Filtering & follow-up questions"></button>
           </div>
         </div>
       </section>
@@ -1113,6 +1109,6 @@
   </div>
 </div>
 
-<script src="js/script.js?v=34"></script>
+<script src="js/script.js?v=35"></script>
 </body>
 </html>

@@ -115,7 +115,7 @@
     people: [{ name: 'Operations team', kind: 'Group', access: 'Can edit' }],
     links: [],
     comments: false,
-    followUps: false,
+    followUps: true,    // this demo link's owner has granted follow-up questions (FR-315: off by default in the product)
     gatePassed: false,
     selected: null
   };
@@ -179,7 +179,8 @@
     const hasToggle = ins.type !== 'table';
     const filtered = !readOnly && state.filter !== 'all' && ins.source !== state.filter;
     const selected = readOnly && state.selected === ins.id;
-    return `<article class="c-card${filtered ? ' is-filtered' : ''}${selected ? ' is-selected' : ''}" data-id="${ins.id}" data-span="${ins.span}" style="--span:${ins.span}"${readOnly ? ' tabindex="0"' : ''}>
+    const selectable = readOnly && state.followUps;
+    return `<article class="c-card${filtered ? ' is-filtered' : ''}${selected ? ' is-selected' : ''}" data-id="${ins.id}" data-span="${ins.span}" style="--span:${ins.span}"${selectable ? ' tabindex="0"' : ''}>
       <header class="c-card__head">
         <h4 class="c-card__title">${ins.title}</h4>
         <div class="c-card__tools">
@@ -653,18 +654,13 @@
     const n = state.board.length;
     $('viewerCount').textContent = `${n} Insight${n === 1 ? '' : 's'}`;
     $('viewerComments').hidden = !state.comments;
+    if (state.selected && (!state.followUps || !state.board.includes(state.selected))) state.selected = null;
     viewerGrid.innerHTML = n ? state.board.map(id => cardHTML(insights[id], { readOnly: true })).join('')
       : '<p class="c-faint" style="grid-column:span 12;margin:0">This Dashboard has no Insights yet.</p>';
-
-    if (state.selected && !state.board.includes(state.selected)) state.selected = null;
     renderSelection();
 
-    const panel = $('askPanel');
-    panel.classList.toggle('is-off', !state.followUps);
-    $('askOff').hidden = state.followUps;
-    $('askInput').disabled = !state.followUps;
-    panel.querySelector('.c-send').disabled = !state.followUps;
-    $('askSuggest').querySelectorAll('button').forEach(b => { b.disabled = !state.followUps; });
+    // Grant off: the panel is absent, not disabled (PublicBoardView, FR-315).
+    $('askPanel').hidden = !state.followUps;
   }
 
   $('gateForm').addEventListener('submit', e => {
@@ -699,6 +695,7 @@
   });
 
   function selectCard(id) {
+    if (!state.followUps) return;   // no panel to focus (FR-352)
     state.selected = state.selected === id ? null : id;
     viewerGrid.querySelectorAll('.c-card').forEach(el => el.classList.toggle('is-selected', el.dataset.id === state.selected));
     renderSelection();
@@ -726,7 +723,7 @@
     },
     store: {
       q: 'Which store led revenue in May?', needs: ['stores'],
-      build: () => 'Airport, with $128,420, about 31% of May revenue. Downtown was second at $107,860.'
+      build: () => 'Airport, with $128,420. Downtown was second at $107,860.'
     },
     channel: {
       q: 'Where do online orders come from?', needs: ['channel'],
