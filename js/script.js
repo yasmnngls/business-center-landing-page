@@ -426,9 +426,9 @@
   });
 
   // Toolbar
-  $('dashRefresh').addEventListener('click', () => {
+  $('dashRefresh').addEventListener('click', e => {
     state.board.forEach((id, i) => refreshCard(id, i * 60));
-    toast('Refreshing every Insight');
+    if (e.isTrusted) toast('Refreshing every Insight'); // the demo's scripted click stays silent
   });
   $('dashTidy').addEventListener('click', tidy);
   $('dashFilter').addEventListener('change', e => {
@@ -484,9 +484,7 @@
 
   // ---------- Toasts ----------
   const toastHost = $('toasts');
-  let quietToasts = false; // set while the Dashboard demo plays: no announcements for actions nobody took
   function toast(msg) {
-    if (quietToasts) return;
     const t = document.createElement('div');
     t.className = 'c-toast';
     t.setAttribute('role', 'status');
@@ -888,13 +886,47 @@
       plain: 'Q2 is 8 orders behind plan through May 31. April missed by 42, and May beat plan by 34.'
     }
   };
+  // Two gates, both fail-safe. First, every word of the question must come from this
+  // vocabulary, which covers only what the sample answers support: May 2023 revenue and
+  // revenue by store (Retail Sales), top products (Online Orders, which has no Store column),
+  // refund counts and rates by store, and Q2 orders vs plan. Any other word (another period, a
+  // measure such as profit or units, a dimension such as region, a person) gets the refusal.
+  // Second, the question's topics must be a combination one answer actually has, so allowed
+  // words can't be combined into a question no answer covers ("top products at the airport").
+  // "A plausible guess is worse than a refusal."
+  const HERO_WORDS = new Set((
+    'a an the what whats was were is are be been had has have did do does how which where show me give tell list see get ' +
+    'our we us my i in of for by at on to from and or with vs versus per each all any every this that it there ' +
+    'top best most highest lowest biggest largest least worst total overall sum amount much ' +
+    'revenue revenues sales sale sold sell sells seller sellers selling made make earn earned money brought ' +
+    'store stores location locations shop shops branch branches airport downtown riverside northgate ' +
+    'product products item items refund refunds refunded returns returned rate rates percentage percent share ' +
+    'plan planned target targets tracking track tracked against compared compare comparison doing ' +
+    'order orders breakdown break down split summary summarize summarise overview led lead leading performed performing performance ' +
+    'may 2023 month q2'
+  ).split(' '));
   function heroMatch(text) {
-    const t = text.toLowerCase();
-    if (/refund|returns\b|returned/.test(t)) return 'refunds';
-    if (/plan|target/.test(t) && /order/.test(t)) return 'q2'; // anything looser (e.g. "last quarter") gets the refusal
-    if (/product|item|best.?sell/.test(t)) return 'products';
-    if (/store|location|airport|downtown|riverside|northgate/.test(t)) return 'stores';
-    if (/revenue|sales|total|may/.test(t)) return 'revenue';
+    const t = text.toLowerCase().replace(/['‘’]23\b/g, ' 2023').replace(/['‘’]s\b/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const words = t.split(' ');
+    if (!t || words.some(w => !HERO_WORDS.has(w))) return null;
+    const any = re => words.some(w => re.test(w));
+    const store = any(/^(stores?|locations?|shops?|branch(es)?|airport|downtown|riverside|northgate)$/);
+    const product = any(/^(products?|items?)$/) || /best sell|sold best|sells? best|top sell/.test(t);
+    const refund = any(/^(refund(s|ed)?|returns|returned)$/);
+    const money = any(/^(revenues?|money|earn(ed)?|brought|amount|much|sum)$/);
+    const plan = any(/^(plan(ned)?|targets?)$/);
+    const order = any(/^orders?$/);
+    const low = any(/^(least|lowest|worst)$/);
+    const may = any(/^may$/), q2 = any(/^q2$/);
+    const otherPeriod = !may && any(/^(month|2023)$/);  // "the month of May 2023" is fine; the whole of 2023 isn't
+
+    if (plan) return order && !store && !product && !refund && !otherPeriod ? 'q2' : null; // May sits inside Q2
+    if (q2 || otherPeriod || order) return null;  // no other answer covers Q2, other periods, or order counts
+    if (refund) return product || money ? null : 'refunds'; // counts and rates by store, no dollars
+    if (store && product) return null;            // products come from Online Orders, which has no Store column
+    if (product) return low ? null : 'products';  // the card shows the top four, not the bottom
+    if (store) return 'stores';                   // lists every store, so "lowest" is answered too
+    if (money || any(/^(sales?|sold|total|may)$/)) return 'revenue';
     return null;
   }
   const heroCardHTML = a => `
@@ -1193,9 +1225,9 @@
     $('auUndo').disabled = true;
     $('auRedo').disabled = !lastTrig;
   }
-  function pickTrigger(btn) {
+  function pickTrigger(btn, out = false) {
     closePanel();
-    buildFlow({ name: btn.dataset.t, meta: btn.dataset.m, icon: btn.dataset.icon, brand: btn.dataset.brand });
+    buildFlow({ name: btn.dataset.t, meta: btn.dataset.m, icon: btn.dataset.icon, brand: btn.dataset.brand, out });
   }
   auPanel.querySelectorAll('.au-trig, .au-row').forEach(b => b.addEventListener('click', () => pickTrigger(b)));
   $('auAskAi').addEventListener('click', () => {
@@ -1211,7 +1243,8 @@
   // A template names the workflow and brings its trigger; the steps build in like a picked trigger.
   auCanvas.querySelectorAll('.au-tpl').forEach(b => b.addEventListener('click', () => {
     $('auTitle').textContent = b.dataset.name;
-    pickTrigger(b);
+    // Only the revenue report template has a "what was sent" output (see hasOutput)
+    pickTrigger(b, b.dataset.name === 'Monday revenue report');
   }));
   $('auAddTrigger').addEventListener('click', openPanel);
   $('flowTrigger').addEventListener('click', openPanel);
@@ -1247,7 +1280,7 @@
     playSteps(REVIEW, flowNodes.length - 1, () => {
       flowRun.setAttribute('aria-disabled', 'false');
       setLog('done', 'Succeeded · sent to 4 people in leadership');
-      toast('Report sent to leadership · 4 people');
+      toast('Email sent to leadership · 4 people');
       if (hasOutput()) { auOutOpen.hidden = false; fadeIn(auOutOpen); }
     });
   });
@@ -1259,13 +1292,14 @@
   const auOutList = $('auOutList');
   const auOutIds = ['revenue', 'stores', 'weekly', 'channel'];
   const auOutValue = {
-    revenue: ins => ins.value,
+    // Each value carries every figure the summary quotes, so no summary number lacks an Insight
+    revenue: ins => `${ins.value} · ${ins.delta}`,
     stores: ins => `${ins.series[0][0]} · ${fmt(ins.series[0][1], true)}`,
-    weekly: ins => `${ins.series.at(-1)[0]} · ${fmt(ins.series.at(-1)[1], true)}`,
-    channel: ins => `${ins.table.rows[0][0]} · ${ins.table.rows[0][1]} orders`
+    weekly: ins => `${fmt(ins.series[0][1], true)} → ${fmt(ins.series.at(-1)[1], true)}`,
+    channel: ins => `${ins.table.rows[0][0]} · ${ins.table.rows[0][1]} of 949 orders`
   };
   let auOutReturn = null;
-  function hasOutput() { return !!lastTrig && lastTrig.name === 'Schedule trigger'; }
+  function hasOutput() { return !!lastTrig && !!lastTrig.out; }
   function renderOut() {
     const name = $('auTitle').textContent;
     $('auOutName').textContent = name;
@@ -1279,7 +1313,7 @@
         <div class="c-card__rows" id="auOutRows-${id}" hidden>${sourceRowsHTML(ins)}</div>
         <footer class="c-card__foot">
           <span class="c-prov">⟐ ${esc(ins.source)} · ${esc(ins.measure)}</span>
-          <span class="c-actions"><button type="button" data-rows aria-expanded="false" aria-controls="auOutRows-${id}" aria-label="Open every row behind ${esc(ins.title)}">${icon('table')}Rows</button></span>
+          <span class="c-actions"><button type="button" data-rows aria-expanded="false" aria-controls="auOutRows-${id}">${icon('table')}<span>Rows</span></button></span>
         </footer>
       </article>`;
     }).join('');
@@ -1294,7 +1328,8 @@
   function closeOut() {
     hide(auOutOverlay);
     document.body.style.overflow = '';
-    if (auOutReturn) auOutReturn.focus();
+    // Safari doesn't focus a clicked button, so fall back to the button that opened the dialog
+    (auOutReturn && auOutReturn !== document.body ? auOutReturn : auOutOpen).focus();
   }
   auOutOpen.addEventListener('click', openOut);
   $('auOutClose').addEventListener('click', closeOut);
@@ -1306,6 +1341,7 @@
     const open = b.getAttribute('aria-expanded') !== 'true';
     const rows = $(b.getAttribute('aria-controls'));
     b.setAttribute('aria-expanded', String(open));
+    b.querySelector('span').textContent = open ? 'Hide rows' : 'Rows';
     rows.hidden = !open;
     if (open) fadeIn(rows);
   });
@@ -1436,18 +1472,23 @@
     const panels = scope.querySelectorAll('[data-tab-panel]');
 
     // Sliding pill behind the active tab (placed without transition first, then it glides)
+    // Outer span carries the shadow; the inner fill is clipped, so the clip can't cut the shadow off.
     const pill = document.createElement('span');
     pill.className = 'segmented__pill';
     pill.setAttribute('aria-hidden', 'true');
+    pill.innerHTML = '<i></i>';
+    const fill = pill.firstChild;
     tabs.prepend(pill);
     tabs.classList.add('has-pill');
-    // The pill spans the whole track and is clipped down to the active tab, so the move
-    // animates clip-path (composited), never width.
+    // The fill spans the whole track and is clipped down to the active tab, so the move
+    // animates clip-path, never width (the small drop-shadow repaints alongside; cheap at this size). The track width comes from the last tab,
+    // not scrollWidth, which would count the pill itself and could only ever grow.
     const placePill = () => {
       const on = tabs.querySelector('[data-tab].is-on');
-      const w = tabs.scrollWidth;
+      const last = buttons[buttons.length - 1];
+      const w = last.offsetLeft + last.offsetWidth;
       pill.style.width = w + 'px';
-      pill.style.clipPath = `inset(0 ${w - on.offsetLeft - on.offsetWidth}px 0 ${on.offsetLeft}px round 10px)`;
+      fill.style.clipPath = `inset(0 ${w - on.offsetLeft - on.offsetWidth}px 0 ${on.offsetLeft}px round 10px)`;
     };
     placePill();
     requestAnimationFrame(() => pill.classList.add('is-ready'));
@@ -1788,7 +1829,6 @@
       await go(first ? 700 : 360);
     };
     setDemo('playing');
-    quietToasts = true;
     try {
       clearBoard();
       $('dashLib').classList.remove('is-collapsed'); // a replay needs the library open again
@@ -1822,7 +1862,6 @@
   }
   function endDemo() {
     demoRun++;
-    quietToasts = false;
     drop();
     cursor.classList.remove('is-on');
     setDemo('done');

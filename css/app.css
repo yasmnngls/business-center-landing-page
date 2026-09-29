@@ -102,7 +102,7 @@
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 .c-select {
-  padding-right: 30px; appearance: none; -webkit-appearance: none; cursor: pointer;
+  padding-right: 30px; appearance: none; -webkit-appearance: none; cursor: var(--cursor-pointer);
   background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b7e92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center / 14px;
 }
 .c-select--block { width: 100%; }
@@ -148,7 +148,7 @@
 .c-actions button:hover, .c-actions a:hover { color: var(--c-ink); border-color: var(--c-faint); }
 .c-actions button[aria-expanded="true"] { color: var(--c-accent-ink); border-color: var(--c-accent); background: var(--c-accent-softer); }
 .c-actions .i { width: 12px; height: 12px; }
-.c-actions button[disabled] { opacity: .5; cursor: default; }
+.c-actions button[disabled] { opacity: .5; cursor: var(--cursor); }
 .c-card--hero .c-card__mark { min-height: 0; padding: 6px 0 4px; }
 .c-card .rows { margin-top: 0; }
 .c-grid > .c-card { container: card / inline-size; }
@@ -208,7 +208,7 @@
 .c-send { width: 34px; height: 34px; flex: none; border-radius: 50%; border: none; background: var(--c-accent); color: #fff; display: grid; place-items: center; transition: background-color 150ms ease, transform var(--dur-press) var(--ease-out); }
 .c-send:hover { background: var(--c-accent-ink); }
 .c-send:active { transform: scale(0.94); }
-.c-send[disabled] { background: var(--c-line-strong); cursor: default; }
+.c-send[disabled] { background: var(--c-line-strong); cursor: var(--cursor); }
 .c-send[disabled]:active { transform: none; }
 
 /* ---------- Menu popover (scales from its trigger's corner) ---------- */
@@ -273,7 +273,7 @@
 @container board (max-width: 480px) {
   .c-grid > .c-card[data-span] { grid-column: span 12; }
 }
-.c-grid--viewer > .c-card { cursor: pointer; }
+.c-grid--viewer > .c-card { cursor: var(--cursor-pointer); }
 .dash__empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 1.5px dashed var(--c-line-strong); border-radius: 12px; color: var(--c-mut); font-size: 13.5px; text-align: center; padding: 24px; }
 .dash__empty > .i { width: 28px; height: 28px; color: var(--c-faint-soft); }
 .dash__empty p { margin: 0; }
@@ -332,7 +332,7 @@
 .demo-toggle {
   display: inline-flex; align-items: center; gap: 8px;
   border: none; background: none; padding: 0; font: inherit; font-weight: 500;
-  color: var(--accent); cursor: pointer; transition: transform var(--dur-press) var(--ease-out);
+  color: var(--accent); cursor: var(--cursor-pointer); transition: transform var(--dur-press) var(--ease-out);
 }
 .demo-toggle:active { transform: scale(.97); }
 @media (hover: hover) and (pointer: fine) { .demo-toggle:hover { text-decoration: underline; text-underline-offset: 3px; } }
@@ -348,7 +348,7 @@
 .c-lib__sub { margin: 0; font-size: 12px; color: var(--c-mut); line-height: 1.5; }
 .c-lib__list { list-style: none; margin: 4px 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .c-lib__item { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid var(--c-line); border-radius: 10px; background: #fff; transition: border-color 150ms ease, background-color 150ms ease, opacity 150ms ease; }
-.c-lib__item[draggable="true"] { cursor: grab; }
+.c-lib__item[draggable="true"] { cursor: var(--cursor-grab); }
 .c-lib__item.is-dragging { opacity: .5; }
 .c-lib__thumb { width: 34px; height: 34px; flex: none; border-radius: 8px; background: var(--c-accent-softer); color: var(--c-accent); display: grid; place-items: center; }
 .c-lib__thumb .i { width: 16px; height: 16px; }
@@ -410,7 +410,7 @@
 .c-askpanel { flex: 0 0 340px; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--c-line); min-height: 0; max-height: 680px; }
 /* Side by side, the Ask panel matches the Dashboard's Pinned insights panel (--lib-h is set in JS) */
 @media (min-width: 1081px) {
-  .c-askpanel { height: var(--lib-h, auto); max-height: none; align-self: flex-start; }
+  .c-askpanel { height: var(--lib-h, 680px); max-height: none; /* 680px = the old cap, if no side-by-side height was ever measured */ align-self: flex-start; }
 }
 .c-askpanel__head { display: flex; align-items: center; gap: 8px; padding: 16px 18px; border-bottom: 1px solid var(--c-line); font-size: 15px; }
 .c-askpanel__icon { width: 28px; height: 28px; border-radius: 8px; background: var(--c-accent); color: #fff; display: grid; place-items: center; }
@@ -422,7 +422,7 @@
 @media (hover: hover) and (pointer: fine) {
   .c-suggest button:hover:not([disabled]):not([aria-disabled="true"]) { border-color: var(--c-accent); background: var(--c-accent-softer); color: var(--c-accent-ink); }
 }
-.c-suggest button[disabled], .c-suggest button[aria-disabled="true"] { opacity: .55; cursor: default; }
+.c-suggest button[disabled], .c-suggest button[aria-disabled="true"] { opacity: .55; cursor: var(--cursor); }
 .c-suggest button[aria-disabled="true"]:active { transform: none; }
 
 /* Hero chat: scrolling thread, suggestion chips, clickable recents, live composer */
@@ -440,12 +440,12 @@
 button.c-recent { border: none; background: none; width: 100%; text-align: left; font-family: var(--font-app); transition: background-color 150ms ease, color 150ms ease, transform var(--dur-press) var(--ease-out); }
 button.c-recent.is-on { background: var(--c-tint); }
 button.c-recent:active:not([aria-disabled="true"]) { transform: scale(0.97); }
-.c-recent[aria-disabled="true"] { cursor: default; }
+.c-recent[aria-disabled="true"] { cursor: var(--cursor); }
 .c-composer__input { flex: 1; min-width: 0; border: none; outline: none; background: none; padding: 6px 0; font-family: var(--font-app); font-size: 14px; color: var(--c-ink); }
 .c-composer__input::placeholder { color: var(--c-faint-soft); }
 .c-composer { transition: border-color 150ms ease, box-shadow 150ms ease; }
 .c-composer:focus-within { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-softer), var(--c-sh); }
-.c-send[aria-disabled="true"] { background: var(--c-line-strong); cursor: default; }
+.c-send[aria-disabled="true"] { background: var(--c-line-strong); cursor: var(--cursor); }
 .c-send[aria-disabled="true"]:active { transform: none; }
 @media (hover: hover) and (pointer: fine) {
   button.c-recent:not(.is-on):not([aria-disabled="true"]):hover { background: var(--c-tint); color: var(--c-ink); }
@@ -576,7 +576,7 @@ a.c-nav { text-decoration: none; }
 .au-btn--icon { width: 30px; padding: 0; color: var(--c-mut); }
 .au-btn--primary { background: var(--c-accent); border-color: var(--c-accent); color: #fff; font-weight: 600; }
 .au-btn--primary .i { width: 12px; height: 12px; fill: currentColor; stroke: none; }
-.au-btn--primary[aria-disabled="true"] { opacity: .5; cursor: default; }
+.au-btn--primary[aria-disabled="true"] { opacity: .5; cursor: var(--cursor); }
 button.au-btn:active:not([aria-disabled="true"]) { transform: scale(0.97); }
 
 /* Canvas */
@@ -593,7 +593,7 @@ button.au-btn:active:not([aria-disabled="true"]) { transform: scale(0.97); }
   transition: background-color 150ms ease, color 150ms ease, transform var(--dur-press) var(--ease-out);
 }
 .au-tool .i { width: 14px; height: 14px; }
-.au-tool:disabled { opacity: .4; cursor: default; }
+.au-tool:disabled { opacity: .4; cursor: var(--cursor); }
 .au-tool:active:not(:disabled) { transform: scale(0.95); }
 .au-zoom { min-width: 40px; text-align: center; font-size: 11.5px; font-weight: 500; color: var(--c-ink); }
 
@@ -833,7 +833,8 @@ button.flow-node:active { transform: scale(0.98); }
   display: inline-flex; align-items: center; gap: 2px; flex: none; margin-left: auto; padding: 3px 6px 3px 10px;
   border: 1px solid var(--c-line); border-radius: 99px; background: #fff;
   font-family: var(--font-app); font-size: 11.5px; font-weight: 600; color: var(--c-accent-ink); white-space: nowrap;
-  transition: border-color 150ms ease, background-color 150ms ease, transform var(--dur-press) var(--ease-out);
+  transition: border-color 150ms ease, background-color 150ms ease, transform var(--dur-press) var(--ease-out),
+    opacity 160ms var(--ease-out), filter 160ms var(--ease-out);
 }
 .app-ui .au-out-btn[hidden] { display: none; }
 .app-ui .au-out-btn .i { width: 12px; height: 12px; }

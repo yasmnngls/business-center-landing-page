@@ -72,7 +72,7 @@ There are two rows of five cards, scrolling in opposite directions. Hovering, pr
 
 ## Cache busting
 
-The CSS and JS links in `index.html` carry a version query, `?v=13`. Bump it when you change `css/` or `js/` so browsers pick up the new files.
+The CSS and JS links in `index.html` carry a version query, `?v=17`. Bump it when you change `css/` or `js/` so browsers pick up the new files.
 
 ## Intro video
 
