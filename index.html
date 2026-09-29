@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20">
-<link rel="stylesheet" href="css/app.css?v=20">
+<link rel="stylesheet" href="css/style.css?v=28">
+<link rel="stylesheet" href="css/app.css?v=28">
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -55,6 +55,11 @@
     <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10"/></symbol>
     <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h2a2 2 0 0 1 2 2v10M2 21h20M8 7h4M8 11h4M8 15h4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M6 20v-6M12 20V5M18 20v-9"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
   </defs>
 </svg>
 
@@ -1043,31 +1048,75 @@
 <!-- Request a demo modal -->
 <div class="modal-overlay" id="modalOverlay" hidden>
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="modal__close" id="modalClose" aria-label="Close">×</button>
+    <button class="modal__close" id="modalClose" aria-label="Close"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
 
-    <form class="modal__form" id="requestForm">
-      <div>
-        <h3 class="modal__title" id="modalTitle">Request a demo</h3>
-        <p class="modal__sub">Tell us a little about you and the report you rebuild most.</p>
+    <div class="modal__promo">
+      <div class="modal__art" aria-hidden="true">
+        <span class="modal__blob modal__blob--1"></span><span class="modal__blob modal__blob--2"></span><span class="modal__blob modal__blob--3"></span>
+        <span class="modal__plate"></span>
+        <div class="modal__float">
+          <svg class="i"><use href="#i-sparkle"/></svg>
+          <div><b>From questions<br>to real answers</b><i></i><i></i></div>
+        </div>
+        <div class="modal__device app-ui">
+          <div class="md-side">
+            <span class="c-logo"><img class="c-logo__mark" src="img/logo.webp" alt="" width="24" height="24">Centri</span>
+            <span class="c-nav is-active"><svg class="i"><use href="#i-sparkle"/></svg>Signals</span>
+            <span class="c-nav"><svg class="i"><use href="#i-grid"/></svg>Dashboard</span>
+            <span class="c-nav"><svg class="i"><use href="#i-plug"/></svg>Connections</span>
+            <span class="c-nav"><svg class="i"><use href="#i-bolt"/></svg>Automate</span>
+          </div>
+          <div class="md-main">
+            <div class="md-card">
+              <em>Revenue · May</em>
+              <b>$410,000</b>
+              <span class="chip chip--green">+6.2%</span>
+              <span class="md-def">SUM(Total Amount) · May 2023</span>
+              <span class="c-prov">⟐ Retail Sales</span>
+              <div class="md-bars"><i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:78%"></i><i style="--h:96%"></i></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <label class="field">Name<input required name="name" autocomplete="name"></label>
-      <label class="field">Work email<input required type="email" name="email" autocomplete="email"></label>
-      <div class="field-row">
-        <label class="field">Company<input name="company" autocomplete="organization"></label>
-        <label class="field">Role<input name="role" placeholder="e.g. Head of Ops"></label>
-      </div>
-      <label class="field">Which report are you most tired of rebuilding?<textarea rows="3" name="report"></textarea></label>
-      <button type="submit" class="btn btn--dark btn--block">Request a demo</button>
-    </form>
 
-    <div class="modal__sent" id="modalSent" hidden>
-      <span class="chip chip--green">Request received</span>
-      <h3 class="modal__title">Thanks. We’ll be in touch.</h3>
-      <p class="modal__sub">We’ll reply to the email you gave us. Keep that spreadsheet handy.</p>
+      <div class="modal__copy">
+        <span class="brand"><img class="brand__logo" src="img/logo.webp" alt="" width="30" height="30"><span class="brand__name">Centri</span></span>
+        <span class="modal__chip">Demo</span>
+        <p class="modal__headline">See Centri <span>in action</span></p>
+        <p class="modal__lede">Get a personalized walkthrough and see how Centri can help you turn your data into numbers you can trust.</p>
+        <ul class="modal__perks">
+          <li><span class="modal__perk-icon" aria-hidden="true"><svg class="i"><use href="#i-chart"/></svg></span><span><b>Tailored walkthrough</b>See features that match your needs</span></li>
+          <li><span class="modal__perk-icon" aria-hidden="true"><svg class="i"><use href="#i-sparkle"/></svg></span><span><b>Real use cases</b>Explore with your own questions</span></li>
+          <li><span class="modal__perk-icon" aria-hidden="true"><svg class="i"><use href="#i-users"/></svg></span><span><b>No commitment</b>Just a friendly conversation</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal__main">
+      <form class="modal__form" id="requestForm">
+        <div>
+          <h3 class="modal__title" id="modalTitle">Request a demo</h3>
+          <p class="modal__sub">Tell us a little about you and the report you rebuild most.</p>
+        </div>
+        <label class="field">Name<span class="field__box"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><input required name="name" autocomplete="name" placeholder="e.g. Juan Dela Cruz"></span></label>
+        <label class="field">Work email<span class="field__box"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><input required type="email" name="email" autocomplete="email" placeholder="you@company.com"></span></label>
+        <div class="field-row">
+          <label class="field">Company<span class="field__box"><svg class="i" aria-hidden="true"><use href="#i-building"/></svg><input name="company" autocomplete="organization" placeholder="e.g. Acme Retail"></span></label>
+          <label class="field">Role<span class="field__box"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><input name="role" placeholder="e.g. Head of Ops"></span></label>
+        </div>
+        <label class="field">Which report are you most tired of rebuilding?<span class="field__box field__box--area"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg><textarea rows="3" name="report" placeholder="e.g. Weekly sales report, ad performance, or any data report you handle often."></textarea></span></label>
+        <button type="submit" class="btn btn--dark btn--block modal__submit">Request a demo<svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+      </form>
+
+      <div class="modal__sent" id="modalSent" hidden>
+        <span class="chip chip--green">Request received</span>
+        <h3 class="modal__title">Thanks. We’ll be in touch.</h3>
+        <p class="modal__sub">We’ll reply to the email you gave us. Keep that spreadsheet handy.</p>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="js/script.js?v=20"></script>
+<script src="js/script.js?v=28"></script>
 </body>
 </html>
