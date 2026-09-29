@@ -886,16 +886,19 @@
       plain: 'Q2 is 8 orders behind plan through May 31. April missed by 42, and May beat plan by 34.'
     }
   };
-  // A true allowlist: every word of the question must come from this vocabulary, which only
-  // covers what the sample answers can support (May 2023, Retail Sales revenue, stores,
-  // products, refunds, and Q2 orders vs plan). Any other word (another period, a measure such
-  // as profit or units, a dimension such as region, a forecast) gets the refusal.
+  // Two gates, both fail-safe. First, every word of the question must come from this
+  // vocabulary, which covers only what the sample answers support: May 2023 revenue and
+  // revenue by store (Retail Sales), top products (Online Orders, which has no Store column),
+  // refund counts and rates by store, and Q2 orders vs plan. Any other word (another period, a
+  // measure such as profit or units, a dimension such as region, a person) gets the refusal.
+  // Second, the question's topics must be a combination one answer actually has, so allowed
+  // words can't be combined into a question no answer covers ("top products at the airport").
   // "A plausible guess is worse than a refusal."
   const HERO_WORDS = new Set((
-    'a an the what whats was were is are be been did do does how which who where show me give tell list see get ' +
+    'a an the what whats was were is are be been had has have did do does how which where show me give tell list see get ' +
     'our we us my i in of for by at on to from and or with vs versus per each all any every this that it there ' +
     'top best most highest lowest biggest largest least worst total overall sum amount much ' +
-    'revenue revenues sales sale sold sell sells seller sellers selling made make earn earned money brought income gross ' +
+    'revenue revenues sales sale sold sell sells seller sellers selling made make earn earned money brought ' +
     'store stores location locations shop shops branch branches airport downtown riverside northgate ' +
     'product products item items refund refunds refunded returns returned rate rates percentage percent share ' +
     'plan planned target targets tracking track tracked against compared compare comparison doing ' +
@@ -903,19 +906,27 @@
     'may 2023 month q2'
   ).split(' '));
   function heroMatch(text) {
-    const t = text.toLowerCase().replace(/'23\b/g, ' 2023').replace(/['’]s\b/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const t = text.toLowerCase().replace(/['‘’]23\b/g, ' 2023').replace(/['‘’]s\b/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
     const words = t.split(' ');
     if (!t || words.some(w => !HERO_WORDS.has(w))) return null;
-    const has = w => words.includes(w);
-    const may = has('may');
-    if (/plan|target/.test(t)) return /\border/.test(t) ? 'q2' : null; // Q2 2023; May sits inside Q2
-    if (has('q2')) return null;                             // Q2 only has the orders-vs-plan answer
-    if ((has('month') || has('2023')) && !may) return null; // "the month of May 2023" is fine; the whole of 2023 isn't
-    if (/\border/.test(t)) return null;                     // no answer counts orders on their own; don't hand back dollars
-    if (/refund|returns|returned/.test(t)) return 'refunds';
-    if (/product|item|best sell|sold best|sells? best|top sell/.test(t)) return 'products';
-    if (/store|location|shop|branch|airport|downtown|riverside|northgate/.test(t)) return 'stores';
-    if (/revenue|sale|sold|total|money|income|earn|may/.test(t)) return 'revenue';
+    const any = re => words.some(w => re.test(w));
+    const store = any(/^(stores?|locations?|shops?|branch(es)?|airport|downtown|riverside|northgate)$/);
+    const product = any(/^(products?|items?)$/) || /best sell|sold best|sells? best|top sell/.test(t);
+    const refund = any(/^(refund(s|ed)?|returns|returned)$/);
+    const money = any(/^(revenues?|money|earn(ed)?|brought|amount|much|sum)$/);
+    const plan = any(/^(plan(ned)?|targets?)$/);
+    const order = any(/^orders?$/);
+    const low = any(/^(least|lowest|worst)$/);
+    const may = any(/^may$/), q2 = any(/^q2$/);
+    const otherPeriod = !may && any(/^(month|2023)$/);  // "the month of May 2023" is fine; the whole of 2023 isn't
+
+    if (plan) return order && !store && !product && !refund && !otherPeriod ? 'q2' : null; // May sits inside Q2
+    if (q2 || otherPeriod || order) return null;  // no other answer covers Q2, other periods, or order counts
+    if (refund) return product || money ? null : 'refunds'; // counts and rates by store, no dollars
+    if (store && product) return null;            // products come from Online Orders, which has no Store column
+    if (product) return low ? null : 'products';  // the card shows the top four, not the bottom
+    if (store) return 'stores';                   // lists every store, so "lowest" is answered too
+    if (money || any(/^(sales?|sold|total|may)$/)) return 'revenue';
     return null;
   }
   const heroCardHTML = a => `
