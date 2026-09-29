@@ -637,7 +637,6 @@
     const link = activeLink();
     const gate = gatedLink();
     $('viewerUrl').textContent = link ? link.url : 'centri.app/?shared=…';
-    $('viewerNotice').hidden = !!link;
 
     const showGate = !!gate && !state.gatePassed;
     $('viewerGate').hidden = !showGate;
