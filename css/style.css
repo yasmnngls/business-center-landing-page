@@ -344,10 +344,11 @@ section[id] { scroll-margin-top: 72px; }
 .segmented.has-pill button.is-on { background: transparent; box-shadow: none; }
 .segmented.has-pill button:active { transform: scale(.97); }
 .segmented__pill {
-  position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 10px;
-  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  position: absolute; top: 4px; bottom: 4px; left: 0; pointer-events: none;
+  filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.1)); /* follows the clipped fill's shape */
 }
-.segmented__pill.is-ready { transition: clip-path 300ms var(--ease-out); }
+.segmented__pill > i { position: absolute; inset: 0; border-radius: 10px; background: #fff; }
+.segmented__pill.is-ready > i { transition: clip-path 300ms var(--ease-out); }
 
 /* Trust panel build-in: rows rise in order (--r set in JS), bars sweep from the left, values count up */
 .trust__panel .t-item {
@@ -363,7 +364,7 @@ section[id] { scroll-margin-top: 72px; }
 .js .trust__panel:not(.is-in) .bar-track .bar, .trust__panel .t-reset .bar-track .bar { clip-path: inset(0 100% 0 0 round 3px); transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .segmented__pill.is-ready { transition: none; }
+  .segmented__pill.is-ready > i { transition: none; }
   .trust__panel .t-item { transition: opacity 250ms ease; transition-delay: 0ms; }
   .js .trust__panel .t-item { transform: none !important; }
   .js .trust__panel .bar-track .bar { clip-path: none !important; transition: none; }

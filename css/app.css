@@ -410,7 +410,7 @@
 .c-askpanel { flex: 0 0 340px; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--c-line); min-height: 0; max-height: 680px; }
 /* Side by side, the Ask panel matches the Dashboard's Pinned insights panel (--lib-h is set in JS) */
 @media (min-width: 1081px) {
-  .c-askpanel { height: var(--lib-h, auto); max-height: none; align-self: flex-start; }
+  .c-askpanel { height: var(--lib-h, 680px); max-height: none; /* 680px = the old cap, if no side-by-side height was ever measured */ align-self: flex-start; }
 }
 .c-askpanel__head { display: flex; align-items: center; gap: 8px; padding: 16px 18px; border-bottom: 1px solid var(--c-line); font-size: 15px; }
 .c-askpanel__icon { width: 28px; height: 28px; border-radius: 8px; background: var(--c-accent); color: #fff; display: grid; place-items: center; }

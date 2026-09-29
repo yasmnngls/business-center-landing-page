@@ -426,9 +426,9 @@
   });
 
   // Toolbar
-  $('dashRefresh').addEventListener('click', () => {
+  $('dashRefresh').addEventListener('click', e => {
     state.board.forEach((id, i) => refreshCard(id, i * 60));
-    toast('Refreshing every Insight');
+    if (e.isTrusted) toast('Refreshing every Insight'); // the demo's scripted click stays silent
   });
   $('dashTidy').addEventListener('click', tidy);
   $('dashFilter').addEventListener('change', e => {
@@ -484,9 +484,7 @@
 
   // ---------- Toasts ----------
   const toastHost = $('toasts');
-  let quietToasts = false; // set while the Dashboard demo plays: no announcements for actions nobody took
   function toast(msg) {
-    if (quietToasts) return;
     const t = document.createElement('div');
     t.className = 'c-toast';
     t.setAttribute('role', 'status');
@@ -890,8 +888,11 @@
   };
   function heroMatch(text) {
     const t = text.toLowerCase();
+    if (/plan|target/.test(t) && /order/.test(t)) return 'q2';
+    // Every other answer is May 2023. A question about any other period, a plan or a target
+    // gets the refusal rather than May's numbers presented as if they answered it.
+    if (/\bq[1-4]\b|quarter|plan|target|year|week|month|\b(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|june?|july?|aug(ust)?|sept?(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)\b|\b20(?!23)\d\d\b/.test(t)) return null;
     if (/refund|returns\b|returned/.test(t)) return 'refunds';
-    if (/plan|target/.test(t) && /order/.test(t)) return 'q2'; // anything looser (e.g. "last quarter") gets the refusal
     if (/product|item|best.?sell/.test(t)) return 'products';
     if (/store|location|airport|downtown|riverside|northgate/.test(t)) return 'stores';
     if (/revenue|sales|total|may/.test(t)) return 'revenue';
@@ -1436,18 +1437,23 @@
     const panels = scope.querySelectorAll('[data-tab-panel]');
 
     // Sliding pill behind the active tab (placed without transition first, then it glides)
+    // Outer span carries the shadow; the inner fill is clipped, so the clip can't cut the shadow off.
     const pill = document.createElement('span');
     pill.className = 'segmented__pill';
     pill.setAttribute('aria-hidden', 'true');
+    pill.innerHTML = '<i></i>';
+    const fill = pill.firstChild;
     tabs.prepend(pill);
     tabs.classList.add('has-pill');
-    // The pill spans the whole track and is clipped down to the active tab, so the move
-    // animates clip-path (composited), never width.
+    // The fill spans the whole track and is clipped down to the active tab, so the move
+    // animates clip-path (composited), never width. The track width comes from the last tab,
+    // not scrollWidth, which would count the pill itself and could only ever grow.
     const placePill = () => {
       const on = tabs.querySelector('[data-tab].is-on');
-      const w = tabs.scrollWidth;
+      const last = buttons[buttons.length - 1];
+      const w = last.offsetLeft + last.offsetWidth;
       pill.style.width = w + 'px';
-      pill.style.clipPath = `inset(0 ${w - on.offsetLeft - on.offsetWidth}px 0 ${on.offsetLeft}px round 10px)`;
+      fill.style.clipPath = `inset(0 ${w - on.offsetLeft - on.offsetWidth}px 0 ${on.offsetLeft}px round 10px)`;
     };
     placePill();
     requestAnimationFrame(() => pill.classList.add('is-ready'));
@@ -1788,7 +1794,6 @@
       await go(first ? 700 : 360);
     };
     setDemo('playing');
-    quietToasts = true;
     try {
       clearBoard();
       $('dashLib').classList.remove('is-collapsed'); // a replay needs the library open again
@@ -1822,7 +1827,6 @@
   }
   function endDemo() {
     demoRun++;
-    quietToasts = false;
     drop();
     cursor.classList.remove('is-on');
     setDemo('done');
