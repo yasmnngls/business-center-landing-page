@@ -628,17 +628,37 @@ section[id] { scroll-margin-top: 72px; }
   padding: clamp(80px, 11vw, 150px) var(--gutter); text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 36px;
   background:
-    radial-gradient(60% 75% at 50% 110%, #5b1ecf 0%, #7132f5 30%, rgba(150,110,255,.6) 55%, rgba(230,222,255,0) 80%),
     radial-gradient(50% 60% at 0% 100%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
     radial-gradient(50% 60% at 100% 100%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
     linear-gradient(180deg, #f0ebff 0%, #e3d9ff 100%);
 }
+/* The glow is its own layer so hover can grow it with transform alone */
+.final__card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 75% at 50% 110%, #5b1ecf 0%, #7132f5 30%, rgba(150,110,255,.6) 55%, rgba(230,222,255,0) 80%);
+  transform-origin: 50% 100%;
+  transition: transform var(--dur-dialog) var(--ease-out);
+}
 .final__dots {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: radial-gradient(rgba(255,255,255,.75) 1.4px, transparent 1.6px);
+  background-image: radial-gradient(rgba(255,255,255,.9) 1.4px, transparent 1.6px);
   background-size: 22px 22px;
   -webkit-mask-image: radial-gradient(70% 70% at 50% 100%, #000 10%, transparent 75%);
   mask-image: radial-gradient(70% 70% at 50% 100%, #000 10%, transparent 75%);
+  opacity: .83; /* .9 × .83 ≈ the old .75 dots at rest */
+  transition: opacity var(--dur-dialog) var(--ease-out), transform var(--dur-dialog) var(--ease-out);
+}
+/* Hover (or keyboard focus on the button): the glow rises and the dot grid brightens */
+@media (hover: hover) and (pointer: fine) {
+  .final__card:hover::before { transform: scale(1.08, 1.14); }
+  .final__card:hover .final__dots { opacity: 1; transform: translateY(-6px); }
+}
+.final__card:has(.btn:focus-visible)::before { transform: scale(1.08, 1.14); }
+.final__card:has(.btn:focus-visible) .final__dots { opacity: 1; transform: translateY(-6px); }
+@media (prefers-reduced-motion: reduce) {
+  .final__card::before { transition: none; }
+  .final__card:hover::before, .final__card:has(.btn:focus-visible)::before { transform: none; }
+  .final__card:hover .final__dots, .final__card:has(.btn:focus-visible) .final__dots { transform: none; }
 }
 .final__card .h-display, .final__card .btn { position: relative; }
 
