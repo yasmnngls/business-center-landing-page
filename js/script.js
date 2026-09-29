@@ -409,6 +409,17 @@
   $('libCollapse').addEventListener('click', () => { $('dashLib').classList.add('is-collapsed'); $('libExpand').focus(); });
   $('libExpand').addEventListener('click', () => { $('dashLib').classList.remove('is-collapsed'); $('libCollapse').focus(); });
 
+  // The viewer's Ask panel takes the Pinned insights panel's height (side-by-side layouts only, in CSS).
+  // Only a side-by-side measurement counts: the stacked strip is shorter, and a collapsed library
+  // measures 0, so the last side-by-side height is kept until a new one exists.
+  const libFull = document.querySelector('#dashLib .c-lib__full');
+  const sideBySide = window.matchMedia('(min-width: 1081px)');
+  if (libFull && 'ResizeObserver' in window) {
+    new ResizeObserver(() => {
+      if (sideBySide.matches && libFull.offsetHeight) $('askPanel').style.setProperty('--lib-h', libFull.offsetHeight + 'px');
+    }).observe(libFull);
+  }
+
   $('dashRebuild').addEventListener('click', () => {
     defaultBoard.forEach((id, i) => setTimeout(() => addCard(id, true), i * 60));
     toast('Added 4 Insights');
@@ -473,7 +484,9 @@
 
   // ---------- Toasts ----------
   const toastHost = $('toasts');
+  let quietToasts = false; // set while the Dashboard demo plays: no announcements for actions nobody took
   function toast(msg) {
+    if (quietToasts) return;
     const t = document.createElement('div');
     t.className = 'c-toast';
     t.setAttribute('role', 'status');
@@ -870,15 +883,15 @@
     },
     q2: {
       q: 'How are Q2 orders tracking against plan?', crumb: 'Q2 orders vs plan', title: 'Q2 orders vs plan', rows: '2,492',
-      def: 'COUNT(Orders) vs Plan · Q2 2023 · monthly', source: 'Retail Sales', measure: 'Orders vs Plan', type: 'table',
+      def: 'COUNT(Orders), excluding refunded, vs Plan · Q2 2023 · monthly', source: 'Retail Sales', measure: 'Orders vs Plan', type: 'table',
       table: { cols: ['Month', 'Orders', 'Plan', 'vs plan'], rows: [['April', '1,208', '1,250', '−3.4%'], ['May', '1,284', '1,250', '+2.7%'], ['June', '—', '1,300', 'Not started'], ['Q2 to date', '2,492', '2,500', '−0.3%']] },
       plain: 'Q2 is 8 orders behind plan through May 31. April missed by 42, and May beat plan by 34.'
     }
   };
   function heroMatch(text) {
     const t = text.toLowerCase();
-    if (/refund|return/.test(t)) return 'refunds';
-    if (/plan|target|q2|quarter/.test(t)) return 'q2';
+    if (/refund|returns\b|returned/.test(t)) return 'refunds';
+    if (/plan|target/.test(t) && /order/.test(t)) return 'q2'; // anything looser (e.g. "last quarter") gets the refusal
     if (/product|item|best.?sell/.test(t)) return 'products';
     if (/store|location|airport|downtown|riverside|northgate/.test(t)) return 'stores';
     if (/revenue|sales|total|may/.test(t)) return 'revenue';
@@ -971,6 +984,7 @@
   const flowApprove = $('flowApprove');
   const flowStatus = $('flowStatus');
   const flowLog = flowStatus.parentElement;
+  const auOutOpen = $('auOutOpen');
   const REVIEW = 4;
   const ZOOMS = [75, 90, 100, 110, 125];
   let flowToken = 0;
@@ -1087,6 +1101,7 @@
     flowNodes.forEach((_, i) => setNode(i, null));
     edges.forEach((_, i) => setEdge(i, false, true));
     flowApprove.hidden = true;
+    auOutOpen.hidden = true;
     flowRun.setAttribute('aria-disabled', String(!built));
     setLog('idle', text);
   }
@@ -1233,7 +1248,66 @@
       flowRun.setAttribute('aria-disabled', 'false');
       setLog('done', 'Succeeded · sent to 4 people in leadership');
       toast('Report sent to leadership · 4 people');
+      if (hasOutput()) { auOutOpen.hidden = false; fadeIn(auOutOpen); }
     });
+  });
+
+  // What the Run sent. Only the schedule-triggered revenue report has one: the PRD ships manual and
+  // scheduled triggers (FR-162) and defers event triggers (FR-189), so the other templates show none.
+  // The words are the Dashboard's own summary; every number is a Weekly Ops Review Insight.
+  const auOutOverlay = $('auOutOverlay');
+  const auOutList = $('auOutList');
+  const auOutIds = ['revenue', 'stores', 'weekly', 'channel'];
+  const auOutValue = {
+    revenue: ins => ins.value,
+    stores: ins => `${ins.series[0][0]} · ${fmt(ins.series[0][1], true)}`,
+    weekly: ins => `${ins.series.at(-1)[0]} · ${fmt(ins.series.at(-1)[1], true)}`,
+    channel: ins => `${ins.table.rows[0][0]} · ${ins.table.rows[0][1]} orders`
+  };
+  let auOutReturn = null;
+  function hasOutput() { return !!lastTrig && lastTrig.name === 'Schedule trigger'; }
+  function renderOut() {
+    const name = $('auTitle').textContent;
+    $('auOutName').textContent = name;
+    $('auOutSubject').textContent = name;
+    $('auOutText').textContent = answers.summary.build(Object.fromEntries(auOutIds.map(id => [id, true])));
+    auOutList.innerHTML = auOutIds.map(id => {
+      const ins = insights[id];
+      return `<article class="c-card">
+        <header class="c-card__head"><h5 class="c-card__title">${esc(ins.title)}</h5><b class="au-out__val">${esc(auOutValue[id](ins))}</b></header>
+        <div class="c-card__def">${esc(ins.def)}</div>
+        <div class="c-card__rows" id="auOutRows-${id}" hidden>${sourceRowsHTML(ins)}</div>
+        <footer class="c-card__foot">
+          <span class="c-prov">⟐ ${esc(ins.source)} · ${esc(ins.measure)}</span>
+          <span class="c-actions"><button type="button" data-rows aria-expanded="false" aria-controls="auOutRows-${id}" aria-label="Open every row behind ${esc(ins.title)}">${icon('table')}Rows</button></span>
+        </footer>
+      </article>`;
+    }).join('');
+  }
+  function openOut() {
+    auOutReturn = document.activeElement;
+    renderOut();
+    show(auOutOverlay);
+    document.body.style.overflow = 'hidden';
+    $('auOutClose').focus();
+  }
+  function closeOut() {
+    hide(auOutOverlay);
+    document.body.style.overflow = '';
+    if (auOutReturn) auOutReturn.focus();
+  }
+  auOutOpen.addEventListener('click', openOut);
+  $('auOutClose').addEventListener('click', closeOut);
+  auOutOverlay.addEventListener('click', closeOut);
+  $('auOutDialog').addEventListener('click', e => e.stopPropagation());
+  auOutList.addEventListener('click', e => {
+    const b = e.target.closest('[data-rows]');
+    if (!b) return;
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    const rows = $(b.getAttribute('aria-controls'));
+    b.setAttribute('aria-expanded', String(open));
+    rows.hidden = !open;
+    if (open) fadeIn(rows);
   });
   $('auSave').addEventListener('click', () => { setSaved('Last saved just now'); toast('Workflow saved'); });
   $('auUndo').addEventListener('click', () => { if (built) { clearFlow(); openPanel(); } });
@@ -1321,7 +1395,8 @@
       await go(400);
       await tap(flowApprove, 850);
       await until(() => flowLog.dataset.state === 'done');
-      auSay('Sent. Now try another template');
+      auMove(auOutOpen);
+      auSay('Sent. Open it to see what went out');
       await go(1800);
       endAuDemo();
     } catch (e) {
@@ -1366,10 +1441,13 @@
     pill.setAttribute('aria-hidden', 'true');
     tabs.prepend(pill);
     tabs.classList.add('has-pill');
+    // The pill spans the whole track and is clipped down to the active tab, so the move
+    // animates clip-path (composited), never width.
     const placePill = () => {
       const on = tabs.querySelector('[data-tab].is-on');
-      pill.style.width = on.offsetWidth + 'px';
-      pill.style.transform = `translateX(${on.offsetLeft}px)`;
+      const w = tabs.scrollWidth;
+      pill.style.width = w + 'px';
+      pill.style.clipPath = `inset(0 ${w - on.offsetLeft - on.offsetWidth}px 0 ${on.offsetLeft}px round 10px)`;
     };
     placePill();
     requestAnimationFrame(() => pill.classList.add('is-ready'));
@@ -1451,6 +1529,7 @@
     if (e.key !== 'Escape') return;
     if (modalOverlay.classList.contains('is-open')) closeModal();
     else if (shareOverlay.classList.contains('is-open')) closeShare();
+    else if (auOutOverlay.classList.contains('is-open')) closeOut();
     else if (exportMenu.classList.contains('is-open')) { setExport(false); exportBtn.focus(); }
   });
 
@@ -1597,10 +1676,11 @@
   }
 
   const sleep = ms => new Promise(r => setTimeout(r, ms));
+  // The button keeps its space while idle (visibility, not display) so the Dashboard never shifts.
   function setDemo(s) {
     demoState = s;
-    demoBtn.hidden = s === 'idle' || s === 'armed';
-    demoBtn.textContent = s === 'playing' ? 'Skip demo' : 'Replay demo';
+    demoBtn.classList.toggle('is-idle', s === 'idle' || s === 'armed');
+    demoBtn.querySelector('span').textContent = s === 'playing' ? 'Skip demo' : 'Replay demo';
   }
   function clearBoard() {
     state.board = [];
@@ -1631,6 +1711,9 @@
     ghost = li.cloneNode(true);
     ghost.className = 'c-lib__item demo-ghost';
     ghost.removeAttribute('draggable');
+    ghost.removeAttribute('data-id');
+    ghost.querySelector('.c-lib__add')?.remove(); // no focusable copy inside the aria-hidden cursor
+    ghost.inert = true;
     ghost.style.width = r.width + 'px';
     ghost.style.left = (r.left - grab[0]) + 'px';
     ghost.style.top = (r.top - grab[1]) + 'px';
@@ -1705,6 +1788,7 @@
       await go(first ? 700 : 360);
     };
     setDemo('playing');
+    quietToasts = true;
     try {
       clearBoard();
       $('dashLib').classList.remove('is-collapsed'); // a replay needs the library open again
@@ -1712,20 +1796,20 @@
       say('');
       cursor.classList.add('is-on');
       await go(450);
-      say('Drag a pinned insight onto the board');
+      say('Drag a pinned Insight onto the Dashboard');
       await dragIn(defaultBoard[0], true);
       say('Add as many as your team needs');
       for (const id of defaultBoard.slice(1)) await dragIn(id);
-      say('Switch any card to a Table');
+      say('Switch any Insight to a Table');
       (await at('.c-card[data-id="weekly"] [data-view="table"]')).click();
       await go(1000);
       say('…and back to the Chart');
       (await at('.c-card[data-id="weekly"] [data-view="chart"]', 420)).click();
       await go(700);
-      say('Refresh every card in one click');
+      say('Refresh every Insight in one click');
       (await at('#dashRefresh')).click();
       await go(1300);
-      say('Close Pinned insights for more room');
+      say('Close Pinned Insights for more room');
       await at('#libCollapse');
       $('dashLib').classList.add('is-collapsed'); // not .click(): its focus hand-off could scroll the page
       await go(1100);
@@ -1738,6 +1822,7 @@
   }
   function endDemo() {
     demoRun++;
+    quietToasts = false;
     drop();
     cursor.classList.remove('is-on');
     setDemo('done');
@@ -1749,13 +1834,20 @@
     defaultBoard.forEach(id => addCard(id, true));
     $('dashLib').classList.add('is-collapsed');
   });
-  ['pointerdown', 'keydown', 'dragstart'].forEach(type => dashEl.addEventListener(type, e => {
+  // Real input takes over. A touch only counts once it becomes a tap (click): a finger
+  // that starts over the Dashboard just to scroll past it must not stop the demo.
+  const takeOver = e => {
     if (!e.isTrusted) return;
     if (demoState === 'playing') endDemo();
     else if (demoState === 'armed') setDemo('done');
-  }, true));
+  };
+  dashEl.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') takeOver(e); }, true);
+  ['click', 'keydown', 'dragstart'].forEach(type => dashEl.addEventListener(type, takeOver, true));
 
   if ('IntersectionObserver' in window && !reduceMotion.matches) {
+    demoBtn.hidden = false;
+    demoBtn.closest('.demo-hint').hidden = false;
+    setDemo('idle');
     // Arm as soon as any of it nears the viewport (still faded out by the reveal), play once it's well in view.
     const armIO = new IntersectionObserver(([en]) => {
       if (!en.isIntersecting) return;

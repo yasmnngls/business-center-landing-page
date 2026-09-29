@@ -27,7 +27,8 @@
 /* ---------- Sidebar ---------- */
 .c-sidebar { width: 232px; flex: none; background: #fff; border-right: 1px solid var(--c-line); display: flex; flex-direction: column; padding: 0 12px 14px; }
 .c-sidebar__logo { height: 58px; display: flex; align-items: center; margin: 0 -12px 10px; padding: 0 22px; border-bottom: 1px solid var(--c-line); }
-.c-logo { font-family: var(--font-app); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; color: var(--c-accent); }
+.c-logo { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-app); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; color: var(--c-ink); }
+.c-logo__mark { width: 24px; height: 24px; flex: none; display: block; }
 .c-sidebar__nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 .c-nav { display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 10px; color: var(--c-mut); font-weight: 500; font-size: 13.5px; }
 .c-nav .i { width: 17px; height: 17px; }
@@ -43,6 +44,7 @@
 /* Collapsed icon rail (dashboard demo) */
 .c-rail { width: 60px; flex: none; border-right: 1px solid var(--c-line); display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; background: #fff; }
 .c-rail__logo { width: 32px; height: 32px; display: grid; place-items: center; color: var(--c-accent); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 8px; }
+.c-rail__logo img { width: 24px; height: 24px; display: block; }
 .c-rail__item { width: 40px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--c-mut); }
 .c-rail__item .i { width: 17px; height: 17px; }
 .c-rail__item.is-active { background: var(--c-accent-soft); color: var(--c-accent); }
@@ -255,7 +257,7 @@
 .dash__canvas.is-drop { background: var(--c-accent-softer); box-shadow: inset 0 0 0 1.5px var(--c-accent); }
 .c-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; align-content: start; }
 /* Cards reflow by the board's own width (the library beside it eats space), not the viewport:
-   under 760px every card becomes a half (a clean 2×2, no orphan gaps); under 480px everything stacks. */
+   under 860px every card becomes a half (a clean 2×2, no orphan gaps); under 480px everything stacks. */
 .c-grid { container: board / inline-size; }
 .c-grid > .c-card { grid-column: span var(--span, 6); transition: opacity var(--dur-pop) var(--ease-out), transform var(--dur-pop) var(--ease-out), border-color 150ms ease, box-shadow 150ms ease; }
 .c-card.is-filtered { opacity: .38; }
@@ -265,7 +267,7 @@
 .c-grid > .c-card.is-entering { opacity: 0; transform: scale(0.96); transition: none; }
 .c-grid > .c-card.is-leaving { opacity: 0; transform: scale(0.96); transition: opacity var(--dur-exit) var(--ease-out), transform var(--dur-exit) var(--ease-out); pointer-events: none; }
 .c-card.is-selected { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-softer); }
-@container board (max-width: 760px) {
+@container board (max-width: 860px) {
   .c-grid > .c-card:not([data-span="12"]) { grid-column: span 6; }
 }
 @container board (max-width: 480px) {
@@ -303,23 +305,33 @@
   font-family: var(--font-app); font-size: 12.5px; font-weight: 500; line-height: 1.3;
   box-shadow: 0 8px 20px -8px rgba(0, 0, 0, .35);
 }
-.demo-cursor__tip, .demo-cursor__tip.fx { transition: left 700ms var(--ease-in-out), opacity 160ms var(--ease-out), filter 160ms var(--ease-out); }
+/* `left` snaps (no transition) when the caption shifts off an edge; only opacity/blur animate */
+.demo-cursor__tip, .demo-cursor__tip.fx { transition: opacity 160ms var(--ease-out), filter 160ms var(--ease-out); }
 .demo-cursor__tip.is-empty { display: none; }
 
 /* The Insight being dragged: a lifted copy riding under the cursor */
 .demo-ghost {
   position: absolute; z-index: 1; margin: 0; pointer-events: none;
-  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), opacity 150ms var(--ease-out);
+  transition: transform 180ms var(--ease-out), opacity 150ms var(--ease-out), border-color 150ms ease;
 }
-.demo-ghost.is-lifted { transform: rotate(-2deg) scale(1.03); box-shadow: 0 18px 36px -14px rgba(16, 24, 60, .35); border-color: var(--c-accent); }
-.demo-ghost.is-dropped { opacity: 0; transform: scale(.96); box-shadow: none; }
+/* The lift shadow lives on a layer that fades (opacity), so box-shadow itself never animates */
+.demo-ghost::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 18px 36px -14px rgba(16, 24, 60, .35); opacity: 0; transition: opacity 180ms var(--ease-out);
+}
+.demo-ghost.is-lifted { transform: rotate(-2deg) scale(1.03); border-color: var(--c-accent); }
+.demo-ghost.is-lifted::after { opacity: 1; }
+.demo-ghost.is-dropped { opacity: 0; transform: scale(.96); }
+.demo-ghost.is-dropped::after { opacity: 0; }
 .demo-cursor.is-press::after { animation: demo-ripple 450ms var(--ease-out); }
 @keyframes demo-tap { 40% { transform: scale(.85); } }
 @keyframes demo-ripple { from { opacity: .28; transform: scale(.5); } to { opacity: 0; transform: scale(1.4); } }
 .dash .is-demo-press { transform: scale(.97); }
 
+.demo-toggle.is-idle { visibility: hidden; }
 .demo-toggle {
-  border: none; background: none; padding: 0; margin-left: 4px; font: inherit; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: none; background: none; padding: 0; font: inherit; font-weight: 500;
   color: var(--accent); cursor: pointer; transition: transform var(--dur-press) var(--ease-out);
 }
 .demo-toggle:active { transform: scale(.97); }
@@ -365,7 +377,6 @@
 .share__point p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--muted); }
 .share__point strong { display: block; color: var(--ink); font-weight: 500; margin-bottom: 4px; }
 .share__cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 18px; margin: 28px 0 32px; }
-.share__cta-note { font-size: 14px; color: var(--muted); }
 
 .viewer { flex-direction: column; background: var(--c-bg); min-height: 600px; }
 .c-browserbar { display: flex; align-items: center; gap: 14px; height: 44px; padding: 0 14px; background: #f1f1f4; border-bottom: 1px solid var(--c-line); }
@@ -397,6 +408,10 @@
 
 /* Ask this Dashboard panel (PublicBoardView) */
 .c-askpanel { flex: 0 0 340px; display: flex; flex-direction: column; background: #fff; border-left: 1px solid var(--c-line); min-height: 0; max-height: 680px; }
+/* Side by side, the Ask panel matches the Dashboard's Pinned insights panel (--lib-h is set in JS) */
+@media (min-width: 1081px) {
+  .c-askpanel { height: var(--lib-h, auto); max-height: none; align-self: flex-start; }
+}
 .c-askpanel__head { display: flex; align-items: center; gap: 8px; padding: 16px 18px; border-bottom: 1px solid var(--c-line); font-size: 15px; }
 .c-askpanel__icon { width: 28px; height: 28px; border-radius: 8px; background: var(--c-accent); color: #fff; display: grid; place-items: center; }
 .c-askpanel__icon .i { width: 15px; height: 15px; }
@@ -813,6 +828,52 @@ button.flow-node:active { transform: scale(0.98); }
   .au-btn:active, .au-tool:active, .au-trig:active, .au-row:active, .au-tpl:active, .automate__app .is-demo-press, .au-empty__node:active, button.flow-node:active, .flow-approve:active { transform: none !important; }
 }
 
+/* What a finished Run sent: a button on the run log pill opens it in a dialog */
+.app-ui .au-out-btn {
+  display: inline-flex; align-items: center; gap: 2px; flex: none; margin-left: auto; padding: 3px 6px 3px 10px;
+  border: 1px solid var(--c-line); border-radius: 99px; background: #fff;
+  font-family: var(--font-app); font-size: 11.5px; font-weight: 600; color: var(--c-accent-ink); white-space: nowrap;
+  transition: border-color 150ms ease, background-color 150ms ease, transform var(--dur-press) var(--ease-out);
+}
+.app-ui .au-out-btn[hidden] { display: none; }
+.app-ui .au-out-btn .i { width: 12px; height: 12px; }
+.app-ui .au-out-btn:active { transform: scale(0.97); }
+.app-ui.au-out { max-width: 560px; }
+.app-ui.au-out .c-dialog__body { gap: 16px; }
+.app-ui .au-out__meta { margin: 0; display: flex; flex-direction: column; border: 1px solid var(--c-line); border-radius: 12px; }
+.app-ui .au-out__meta > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 9px 14px; font-size: 13px; }
+.app-ui .au-out__meta > div + div { border-top: 1px solid var(--c-line); }
+.app-ui .au-out__meta dt { color: var(--c-faint); }
+.app-ui .au-out__meta dd { margin: 0; display: flex; align-items: center; gap: 6px; min-width: 0; font-weight: 500; overflow-wrap: anywhere; }
+.app-ui .au-out__meta dd .i { width: 14px; height: 14px; color: var(--c-mut); }
+.app-ui .au-out__review { margin: 0; display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 12px; background: var(--c-green-soft); color: var(--c-green-ink); font-size: 13px; line-height: 1.45; }
+.app-ui .au-out__tick { width: 20px; height: 20px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--c-green); color: #fff; }
+.app-ui .au-out__tick .i { width: 12px; height: 12px; stroke-width: 3; }
+.app-ui .au-out__sec h4 { margin: 0 0 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: 14px; font-weight: 700; }
+.app-ui .au-out__sec h4 .flow-tag { margin-left: 0; }
+.app-ui .au-out__text { margin: 0 0 6px; font-size: 13.5px; line-height: 1.6; color: var(--c-ink); }
+.app-ui .au-out__list { display: flex; flex-direction: column; gap: 8px; }
+.app-ui .au-out__list .c-card { container: card / inline-size; padding: 12px 14px; gap: 6px; box-shadow: none; }
+.app-ui .au-out__list .c-card__title { font-size: 13.5px; }
+.app-ui .au-out__list .c-card__foot { padding-top: 8px; }
+.app-ui .au-out__val { flex: none; font-size: 13.5px; font-weight: 700; color: var(--c-accent-ink); }
+.app-ui .au-out__sec h4 .c-prov { font-weight: 500; }
+/* Narrow canvas: the button takes its own row in the pill; the graph leaves room below it for the pill and Replay */
+@container aucanvas (max-width: 560px) {
+  .app-ui .flow__log { flex-wrap: wrap; row-gap: 6px; }
+  .app-ui .flow__log > span:not(.flow__dot) { flex: 1 1 120px; min-width: 0; }
+}
+@media (max-width: 640px) {
+  .app-ui .au-canvas[data-state="built"] { padding-bottom: 144px; }
+  .app-ui .au-canvas[data-state="built"] .au-replay { bottom: 102px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .app-ui .au-out-btn:hover { border-color: var(--c-line-strong); background: var(--c-tint); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-ui .au-out-btn:active { transform: none; }
+}
+
 /* =====================================================================
    Motion helpers: crossfades, scroll reveals, shake
    ===================================================================== */
@@ -827,6 +888,17 @@ button.flow-node:active { transform: scale(0.98); }
   transition-delay: calc(var(--i, 0) * 50ms);
 }
 
+/* Ask section: a soft highlight reads down the Dataset rows once, before the steps run */
+.app-ui .mini-window__row { position: relative; }
+.app-ui .mini-window__row::after {
+  content: ''; position: absolute; inset: 1px -8px 0; border-radius: 6px;
+  background: var(--c-accent-softer); opacity: 0; pointer-events: none;
+}
+.js .ask__stage.is-in .app-ui .mini-window__row::after { animation: row-read var(--dur-dialog) var(--ease-in-out) both; animation-delay: 250ms; }
+.js .ask__stage.is-in .app-ui .mini-window__row + .mini-window__row::after { animation-delay: 370ms; }
+.js .ask__stage.is-in .app-ui .mini-window__row + .mini-window__row + .mini-window__row::after { animation-delay: 490ms; }
+@keyframes row-read { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
+
 .shake { animation: shake 240ms var(--ease-out); }
 @keyframes shake { 20% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 80% { transform: translateX(-2px); } }
 
@@ -838,6 +910,7 @@ button.flow-node:active { transform: scale(0.98); }
   html { scroll-behavior: auto; }
   .js .reveal { transform: none; }
   .js .reveal.is-in { transition: opacity 300ms ease; transition-delay: 0ms; }
+  .js .ask__stage.is-in .app-ui .mini-window__row::after { animation: none; }
   .modal, .c-dialog, .c-menu, .c-toast, .c-grid > .c-card.is-entering, .c-grid > .c-card.is-leaving, .c-msg.c-msg-in, .fx.fx-in { transform: none; }
   .fx.fx-in { filter: none; }
   .nav--sticky, .nav--sticky.is-visible { transform: none; transition: opacity 200ms ease; }
@@ -863,7 +936,6 @@ button.flow-node:active { transform: scale(0.98); }
 }
 @media (max-width: 960px) {
   .c-sidebar, .c-rail { display: none; }
-  .c-grid > .c-card { grid-column: span 12; }
   .share__points { grid-template-columns: minmax(0, 1fr); }
   .share__point, .share__point + .share__point { padding: 22px 0; border-left: none; }
   .share__point + .share__point { border-top: 1px dashed var(--line-dash); }

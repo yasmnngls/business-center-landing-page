@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=10">
-<link rel="stylesheet" href="css/app.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=13">
+<link rel="stylesheet" href="css/app.css?v=13">
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -109,13 +109,12 @@
       <h1 class="hero__title h-2line">Ask your business a question.<br>Get an answer you can trust.</h1>
       <p class="hero__sub">Centri connects your spreadsheets and systems, answers questions in plain language, and shows you the exact data and definition behind every number.</p>
       <button class="btn btn--dark btn--lg js-open-modal">Request Access</button>
-      <span class="hero__note">For operators, chiefs of staff, and BizOps teams.</span>
     </div>
 
     <!-- App window mock: Centri Home -->
     <div class="app-window app-ui hero__app">
       <aside class="c-sidebar">
-        <div class="c-sidebar__logo"><span class="c-logo">Centri</span></div>
+        <div class="c-sidebar__logo"><span class="c-logo"><img class="c-logo__mark" src="img/logo.webp" alt="" width="24" height="24">Centri</span></div>
         <nav class="c-sidebar__nav" aria-label="App navigation (illustration)">
           <span class="c-nav is-active"><svg class="i"><use href="#i-home"/></svg>Home</span>
           <span class="c-nav"><svg class="i"><use href="#i-grid"/></svg>Dashboard</span>
@@ -365,7 +364,7 @@
             <div class="m-opts a" style="--d:560ms"><span class="opt opt--on">Order Date</span><span class="opt">Ship Date</span></div>
           </div>
         </div>
-        <p class="caption"><strong>Connect</strong> Bring in your spreadsheets and systems. No warehouse, no data team.</p>
+        <p class="caption"><strong>Connect.</strong> Bring in your spreadsheets and systems. No warehouse, no data team.</p>
       </article>
 
       <article class="use-card">
@@ -378,7 +377,7 @@
             <div class="m-links a" style="--d:620ms"><span class="c-prov">⟐ Retail Sales · AOV</span><span>Definition</span><span>Rows</span></div>
           </div>
         </div>
-        <p class="caption"><strong>Understand</strong> Ask in plain language and get an answer you can trace.</p>
+        <p class="caption"><strong>Understand.</strong> Ask in plain language and get an answer you can trace.</p>
       </article>
 
       <article class="use-card">
@@ -392,7 +391,7 @@
             </div>
           </div>
         </div>
-        <p class="caption"><strong>Decide</strong> Keep the answers that matter on a Dashboard your team shares.</p>
+        <p class="caption"><strong>Decide.</strong> Keep the answers that matter on a Dashboard your team shares.</p>
       </article>
 
       <article class="use-card">
@@ -405,7 +404,7 @@
             <div class="m-step m-step--wait a" style="--d:620ms"><span>4</span>Send to leadership<span>Waiting</span></div>
           </div>
         </div>
-        <p class="caption"><strong>Act</strong> Turn recurring reports into a workflow, with a person still reviewing what goes out.</p>
+        <p class="caption"><strong>Act.</strong> Turn recurring reports into a workflow, with a person still reviewing what goes out.</p>
       </article>
     </div>
   </section>
@@ -418,11 +417,11 @@
       <p class="lead lead--center">Pin the answers you trust, arrange them on a Dashboard, and refresh them in one click. Every card keeps its definition and source rows attached.</p>
     </div>
 
-    <p class="demo-hint"><svg class="i"><use href="#i-sparkle"/></svg>Try it. Switch a card between Chart and Table, refresh it, remove it, then add it back from Pinned insights. <button type="button" class="demo-toggle" id="demoToggle" hidden>Replay demo</button></p>
+    <p class="demo-hint" hidden><button type="button" class="demo-toggle" id="demoToggle" hidden><svg class="i"><use href="#i-sparkle"/></svg><span>Replay demo</span></button></p>
 
     <div class="app-window app-ui dash" id="dash">
       <aside class="c-rail" aria-hidden="true">
-        <span class="c-rail__logo">C</span>
+        <span class="c-rail__logo"><img src="img/logo.webp" alt="" width="24" height="24"></span>
         <span class="c-rail__item"><svg class="i"><use href="#i-home"/></svg></span>
         <span class="c-rail__item is-active"><svg class="i"><use href="#i-grid"/></svg></span>
         <span class="c-rail__item"><svg class="i"><use href="#i-plug"/></svg></span>
@@ -506,7 +505,6 @@
 
     <div class="share__cta">
       <button class="btn btn--dark btn--md js-open-share" type="button"><svg class="i"><use href="#i-share"/></svg>Open share settings</button>
-      <span class="share__cta-note">Changes you make there update the viewer preview below.</span>
     </div>
 
     <div class="app-window app-ui viewer" id="viewer">
@@ -515,7 +513,7 @@
         <span class="c-browserbar__url"><svg class="i"><use href="#i-lock"/></svg><span class="truncate" id="viewerUrl">centri.app/?shared=…</span></span>
         <span class="c-browserbar__tag">What viewers see</span>
       </div>
-      <div class="c-topbar c-topbar--shared"><span class="c-logo">Centri</span><span class="c-faint">Shared Dashboard</span></div>
+      <div class="c-topbar c-topbar--shared"><span class="c-logo"><img class="c-logo__mark" src="img/logo.webp" alt="" width="24" height="24">Centri</span><span class="c-faint">Shared Dashboard</span></div>
 
       <div class="viewer__notice" id="viewerNotice">No link yet. Create one in share settings to share this Dashboard outside your workspace.</div>
 
@@ -693,7 +691,7 @@
                 </span>
               </div>
 
-              <div class="flow__log"><span class="flow__dot" aria-hidden="true"></span><span id="flowStatus" aria-live="polite">Pick a trigger to start</span></div>
+              <div class="flow__log"><span class="flow__dot" aria-hidden="true"></span><span id="flowStatus" aria-live="polite">Pick a trigger to start</span><button type="button" class="au-out-btn" id="auOutOpen" hidden>See what was sent<svg class="i"><use href="#i-chev-right"/></svg></button></div>
             </div>
           </div>
         </div>
@@ -1003,6 +1001,42 @@
   </div>
 </div>
 
+<!-- Automate: what the finished Run sent. Sample data (Retail Sales, Dana R.) is illustrative. -->
+<div class="c-overlay" id="auOutOverlay" hidden>
+  <div class="c-dialog app-ui au-out" id="auOutDialog" role="dialog" aria-modal="true" aria-labelledby="auOutTitle">
+    <header class="c-dialog__head">
+      <div>
+        <h3 id="auOutTitle">What this Run sent</h3>
+        <p><span id="auOutName">Monday revenue report</span> · Succeeded</p>
+      </div>
+      <button class="c-icon-btn" id="auOutClose" type="button" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </header>
+
+    <div class="c-dialog__body">
+      <dl class="au-out__meta">
+        <div><dt>Via</dt><dd><svg class="i"><use href="#i-mail"/></svg>Email</dd></div>
+        <div><dt>To</dt><dd>Leadership · 4 recipients</dd></div>
+        <div><dt>Subject</dt><dd id="auOutSubject">Monday revenue report</dd></div>
+      </dl>
+
+      <p class="au-out__review"><span class="au-out__tick" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span><span><b>Approved by Dana R.</b> Nothing was sent until this review was approved.</span></p>
+
+      <section class="au-out__sec">
+        <h4>Summary <i class="flow-tag">AI</i></h4>
+        <p class="au-out__text" id="auOutText"></p>
+        <p class="c-prov">The AI wrote the words. Each number comes from an Insight below.</p>
+      </section>
+
+      <section class="au-out__sec">
+        <h4>Insights in this email <span class="c-prov">Weekly Ops Review · 4 Insights</span></h4>
+        <div class="au-out__list" id="auOutList"></div>
+      </section>
+    </div>
+
+    <footer class="c-dialog__foot">Sample data, for illustration only.</footer>
+  </div>
+</div>
+
 <!-- Toasts -->
 <div class="c-toasts app-ui" id="toasts" aria-live="polite"></div>
 
@@ -1034,6 +1068,6 @@
   </div>
 </div>
 
-<script src="js/script.js?v=10"></script>
+<script src="js/script.js?v=13"></script>
 </body>
 </html>
