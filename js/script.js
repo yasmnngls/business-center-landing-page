@@ -1225,9 +1225,9 @@
     $('auUndo').disabled = true;
     $('auRedo').disabled = !lastTrig;
   }
-  function pickTrigger(btn) {
+  function pickTrigger(btn, out = false) {
     closePanel();
-    buildFlow({ name: btn.dataset.t, meta: btn.dataset.m, icon: btn.dataset.icon, brand: btn.dataset.brand });
+    buildFlow({ name: btn.dataset.t, meta: btn.dataset.m, icon: btn.dataset.icon, brand: btn.dataset.brand, out });
   }
   auPanel.querySelectorAll('.au-trig, .au-row').forEach(b => b.addEventListener('click', () => pickTrigger(b)));
   $('auAskAi').addEventListener('click', () => {
@@ -1243,7 +1243,8 @@
   // A template names the workflow and brings its trigger; the steps build in like a picked trigger.
   auCanvas.querySelectorAll('.au-tpl').forEach(b => b.addEventListener('click', () => {
     $('auTitle').textContent = b.dataset.name;
-    pickTrigger(b);
+    // Only the revenue report template has a "what was sent" output (see hasOutput)
+    pickTrigger(b, b.dataset.name === 'Monday revenue report');
   }));
   $('auAddTrigger').addEventListener('click', openPanel);
   $('flowTrigger').addEventListener('click', openPanel);
@@ -1279,7 +1280,7 @@
     playSteps(REVIEW, flowNodes.length - 1, () => {
       flowRun.setAttribute('aria-disabled', 'false');
       setLog('done', 'Succeeded · sent to 4 people in leadership');
-      toast('Report sent to leadership · 4 people');
+      toast('Email sent to leadership · 4 people');
       if (hasOutput()) { auOutOpen.hidden = false; fadeIn(auOutOpen); }
     });
   });
@@ -1291,13 +1292,14 @@
   const auOutList = $('auOutList');
   const auOutIds = ['revenue', 'stores', 'weekly', 'channel'];
   const auOutValue = {
-    revenue: ins => ins.value,
+    // Each value carries every figure the summary quotes, so no summary number lacks an Insight
+    revenue: ins => `${ins.value} · ${ins.delta}`,
     stores: ins => `${ins.series[0][0]} · ${fmt(ins.series[0][1], true)}`,
-    weekly: ins => `${ins.series.at(-1)[0]} · ${fmt(ins.series.at(-1)[1], true)}`,
-    channel: ins => `${ins.table.rows[0][0]} · ${ins.table.rows[0][1]} orders`
+    weekly: ins => `${fmt(ins.series[0][1], true)} → ${fmt(ins.series.at(-1)[1], true)}`,
+    channel: ins => `${ins.table.rows[0][0]} · ${ins.table.rows[0][1]} of 949 orders`
   };
   let auOutReturn = null;
-  function hasOutput() { return !!lastTrig && lastTrig.name === 'Schedule trigger'; }
+  function hasOutput() { return !!lastTrig && !!lastTrig.out; }
   function renderOut() {
     const name = $('auTitle').textContent;
     $('auOutName').textContent = name;
@@ -1311,7 +1313,7 @@
         <div class="c-card__rows" id="auOutRows-${id}" hidden>${sourceRowsHTML(ins)}</div>
         <footer class="c-card__foot">
           <span class="c-prov">⟐ ${esc(ins.source)} · ${esc(ins.measure)}</span>
-          <span class="c-actions"><button type="button" data-rows aria-expanded="false" aria-controls="auOutRows-${id}" aria-label="Open every row behind ${esc(ins.title)}">${icon('table')}Rows</button></span>
+          <span class="c-actions"><button type="button" data-rows aria-expanded="false" aria-controls="auOutRows-${id}">${icon('table')}<span>Rows</span></button></span>
         </footer>
       </article>`;
     }).join('');
@@ -1326,7 +1328,8 @@
   function closeOut() {
     hide(auOutOverlay);
     document.body.style.overflow = '';
-    if (auOutReturn) auOutReturn.focus();
+    // Safari doesn't focus a clicked button, so fall back to the button that opened the dialog
+    (auOutReturn && auOutReturn !== document.body ? auOutReturn : auOutOpen).focus();
   }
   auOutOpen.addEventListener('click', openOut);
   $('auOutClose').addEventListener('click', closeOut);
@@ -1338,6 +1341,7 @@
     const open = b.getAttribute('aria-expanded') !== 'true';
     const rows = $(b.getAttribute('aria-controls'));
     b.setAttribute('aria-expanded', String(open));
+    b.querySelector('span').textContent = open ? 'Hide rows' : 'Rows';
     rows.hidden = !open;
     if (open) fadeIn(rows);
   });
