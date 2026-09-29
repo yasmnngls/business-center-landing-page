@@ -135,7 +135,8 @@ section[id] { scroll-margin-top: 72px; }
 /* Two-line headings: one line per <br> segment on wide screens */
 @media (min-width: 700px) {
   .h-2line { white-space: nowrap; text-wrap: nowrap; font-size: clamp(30px, 3.5vw, 46px); }
-  .hero__title.h-2line { font-size: clamp(38px, 4.4vw, 68px); }
+  /* restates nowrap: .hero__title's later `text-wrap: balance` would otherwise switch wrapping back on */
+  .hero__title.h-2line { font-size: clamp(38px, 4.4vw, 68px); white-space: nowrap; text-wrap: nowrap; }
 }
 
 .h-section {
@@ -209,7 +210,6 @@ section[id] { scroll-margin-top: 72px; }
   font-size: clamp(38px, 5.4vw, 68px); line-height: 1.08; letter-spacing: -0.028em; text-wrap: balance;
 }
 .hero__sub { margin: 20px 0 30px; max-width: 620px; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.55; color: #3b3551; }
-.hero__note { margin-top: 14px; font-size: 14px; color: #534c6b; }
 
 /* App window */
 .app-window {
@@ -306,7 +306,7 @@ section[id] { scroll-margin-top: 72px; }
   align-items: center; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 18px;
 }
 .bar-row__label { display: flex; align-items: center; gap: 12px; font-weight: 500; }
-.bar-row__val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.bar-row__val { min-width: 8ch; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; } /* fixed so the count-up can't resize the bar column */
 .bar-track { height: 30px; }
 .bar-track .bar { height: 100%; }
 .bar { display: block; height: 10px; border-radius: 3px; background: #e4e4e8; }
@@ -347,7 +347,7 @@ section[id] { scroll-margin-top: 72px; }
   position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 10px;
   background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08);
 }
-.segmented__pill.is-ready { transition: transform 300ms var(--ease-out), width 300ms var(--ease-out); }
+.segmented__pill.is-ready { transition: clip-path 300ms var(--ease-out); }
 
 /* Trust panel build-in: rows rise in order (--r set in JS), bars sweep from the left, values count up */
 .trust__panel .t-item {
@@ -403,6 +403,35 @@ section[id] { scroll-margin-top: 72px; }
 .mini-bar span:last-child { text-align: right; font-weight: 500; }
 .mini-bar__track .bar { height: 8px; }
 .reply__links { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: 14px; font-weight: 500; color: var(--accent); }
+
+/* Ask build-in, in the order Centri builds an answer: steps run, numbers land, and only then the AI's sentence */
+.ask__stage .steps li { transition: opacity var(--dur-pop) var(--ease-out) var(--d, 0ms), transform var(--dur-pop) var(--ease-out) var(--d, 0ms); }
+.ask__stage .steps li:nth-child(1) { --d: 400ms; }
+.ask__stage .steps li:nth-child(2) { --d: 680ms; }
+.ask__stage .steps li:nth-child(3) { --d: 960ms; }
+.ask__stage .steps li:nth-child(4) { --d: 1240ms; }
+.ask__stage .steps li::after { transform-origin: top; transition: transform var(--dur-pop) var(--ease-out) calc(var(--d, 0ms) + 140ms); }
+.ask__stage .steps li.is-done .i { transition: opacity var(--dur-pop) var(--ease-out) var(--d, 0ms), transform var(--dur-pop) var(--ease-out) var(--d, 0ms); }
+.ask__stage .mini-bar { --d: calc(1450ms + var(--b, 0) * 70ms); }
+.ask__stage .mini-bar:nth-child(2) { --b: 1; }
+.ask__stage .mini-bar:nth-child(3) { --b: 2; }
+.ask__stage .mini-bar:nth-child(4) { --b: 3; }
+.ask__stage .mini-bar > span:not(.mini-bar__track) { transition: opacity var(--dur-pop) var(--ease-out) var(--d); }
+.ask__stage .mini-bar__track .bar { clip-path: inset(0 0 0 0 round 3px); transition: clip-path var(--dur-dialog) var(--ease-out) var(--d); }
+.ask__stage .reply > p { transition: opacity var(--dur-dialog) var(--ease-out) 1900ms, transform var(--dur-dialog) var(--ease-out) 1900ms; }
+.ask__stage .reply .c-card__foot { transition: opacity var(--dur-pop) var(--ease-out) 2100ms; }
+.ask__stage.reveal:not(.is-in) .steps li, .ask__stage.reveal:not(.is-in) .reply > p { opacity: 0; transform: translateY(4px); }
+.ask__stage.reveal:not(.is-in) .steps li::after { transform: scaleY(0); }
+.ask__stage.reveal:not(.is-in) .steps li.is-done .i { opacity: 0; transform: scale(.9); }
+.ask__stage.reveal:not(.is-in) .mini-bar > span:not(.mini-bar__track), .ask__stage.reveal:not(.is-in) .reply .c-card__foot { opacity: 0; }
+.ask__stage.reveal:not(.is-in) .mini-bar__track .bar { clip-path: inset(0 100% 0 0 round 3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .ask__stage .steps li, .js .ask__stage .steps li::after, .js .ask__stage .steps li.is-done .i, .js .ask__stage .reply > p,
+  .js .ask__stage .mini-bar > span, .js .ask__stage .mini-bar__track .bar, .js .ask__stage .reply .c-card__foot {
+    opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none;
+  }
+}
 
 /* ============ 06 Workflow cards ============ */
 .cards-4 { margin-top: clamp(48px, 6vw, 72px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 28px; }
