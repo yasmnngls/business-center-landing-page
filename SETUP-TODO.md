@@ -27,7 +27,7 @@ actually done.
 
 ## Infrastructure
 
-- [ ] **Where access requests go** (`LN-06`). The Request Access form shows a thank-you but
+- [ ] **Where access requests go** (`LN-06`). The Request a demo form shows a thank-you but
       sends nothing. Choose a destination (form service, email, CRM). Any new third-party
       script needs approval under `CLAUDE.md` rule 22.
 - [ ] **Hosting and domain.** Choose where the static site is served and point the domain at
