@@ -409,17 +409,6 @@
   $('libCollapse').addEventListener('click', () => { $('dashLib').classList.add('is-collapsed'); $('libExpand').focus(); });
   $('libExpand').addEventListener('click', () => { $('dashLib').classList.remove('is-collapsed'); $('libCollapse').focus(); });
 
-  // The viewer's Ask panel takes the Pinned insights panel's height (side-by-side layouts only, in CSS).
-  // Only a side-by-side measurement counts: the stacked strip is shorter, and a collapsed library
-  // measures 0, so the last side-by-side height is kept until a new one exists.
-  const libFull = document.querySelector('#dashLib .c-lib__full');
-  const sideBySide = window.matchMedia('(min-width: 1081px)');
-  if (libFull && 'ResizeObserver' in window) {
-    new ResizeObserver(() => {
-      if (sideBySide.matches && libFull.offsetHeight) $('askPanel').style.setProperty('--lib-h', libFull.offsetHeight + 'px');
-    }).observe(libFull);
-  }
-
   $('dashRebuild').addEventListener('click', () => {
     defaultBoard.forEach((id, i) => setTimeout(() => addCard(id, true), i * 60));
     toast('Added 4 Insights');
