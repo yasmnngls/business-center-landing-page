@@ -132,6 +132,12 @@ section[id] { scroll-margin-top: 72px; }
   font-size: clamp(34px, 4.6vw, 56px); line-height: 1.12; letter-spacing: -0.024em; text-wrap: balance;
 }
 .h-display--left { text-align: left; }
+/* Two-line headings: one line per <br> segment on wide screens */
+@media (min-width: 700px) {
+  .h-2line { white-space: nowrap; text-wrap: nowrap; font-size: clamp(30px, 3.5vw, 46px); }
+  .hero__title.h-2line { font-size: clamp(38px, 4.4vw, 68px); }
+}
+
 .h-section {
   margin: 0; font-family: var(--font-display); font-weight: 500;
   font-size: clamp(28px, 3vw, 38px); line-height: 1.18; letter-spacing: -0.02em;

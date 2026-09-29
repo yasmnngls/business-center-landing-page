@@ -33,7 +33,7 @@ video/            Separate Remotion project for the 60s intro video (see video/R
 |---|---|---|
 | 01 | Hero | App window mock with a working Ask view. Recent and suggested questions swap in answers, and the Rows toggle shows the source rows |
 | 02 | Introducing | The problem and what Centri is |
-| 03 | Connect | Logo wall of data sources. There are two marquee rows, and each pauses on its own when hovered or pressed |
+| 03 | Connect | Logo wall of data sources. There are three marquee rows, and each pauses on its own when hovered or pressed |
 | 04 | Trust | Definitions and source rows behind every answer |
 | 05 | Ask | Segmented demo of asking questions |
 | 06 | How it works | Connect → Understand → Decide → Act cards |
@@ -72,8 +72,18 @@ There are two rows of five cards, scrolling in opposite directions. Hovering, pr
 
 ## Cache busting
 
-The CSS and JS links in `index.html` carry a version query, `?v=8`. Bump it when you change `css/` or `js/` so browsers pick up the new files.
+The CSS and JS links in `index.html` carry a version query, `?v=10`. Bump it when you change `css/` or `js/` so browsers pick up the new files.
 
 ## Intro video
 
 `video/` is a Remotion (React + TypeScript) project for a 60-second 1920×1080 intro. Build commands and structure are in [`video/README.md`](video/README.md). `node_modules/` and the rendered files in `out/` are git-ignored.
+
+## Docs
+
+- [`context.md`](context.md): what this repository is, the page map, and how to run and verify it
+- [`CLAUDE.md`](CLAUDE.md): the rules for changing the page, including what the copy may claim
+- [`glossary.md`](glossary.md): the Centri terms to use on the page
+- [`TASK-TRACKER.md`](TASK-TRACKER.md): what is built, what is open, and known copy conflicts
+- [`SETUP-TODO.md`](SETUP-TODO.md): what a person must do before launch
+
+Product truth lives in the sibling repository: `../internal-marketing/docs/PRD.md` and `../internal-marketing/docs/Landing-Page-Copy.md`.
