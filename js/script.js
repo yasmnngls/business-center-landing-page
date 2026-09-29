@@ -888,10 +888,20 @@
   };
   function heroMatch(text) {
     const t = text.toLowerCase();
-    if (/plan|target/.test(t) && /order/.test(t)) return 'q2';
-    // Every other answer is May 2023. A question about any other period, a plan or a target
-    // gets the refusal rather than May's numbers presented as if they answered it.
-    if (/\bq[1-4]\b|quarter|plan|target|year|week|month|\b(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|june?|july?|aug(ust)?|sept?(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)\b|\b20(?!23)\d\d\b/.test(t)) return null;
+    // Allowlist, not blocklist: the sample only covers May 2023 (and Q2 2023 for the plan
+    // answer), so a question gets an answer only if it names that period or no period at all.
+    // "A plausible guess is worse than a refusal."
+    if (/\b20(?!23)\d\d\b|'\d\d\b|\bfy\s?\d*\b/.test(t)) return null;                  // another year
+    const may = /\bmay\b/.test(t);
+    const otherTime = /\bq[134]\b|\bh[12]\b|quarter|year|ytd|week|today|yesterday|tonight|\b(last|past|previous|next|this)\b|\bdays?\b|\b(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|june?|july?|aug(ust)?|sept?(ember)?|oct(ober)?|nov(ember)?|dec(ember)?)\b/;
+    if (/plan|target/.test(t)) {
+      // Q2 2023 orders vs plan; May sits inside Q2. Anything else about a plan or target is refused.
+      return /\border/.test(t) && !otherTime.test(t) ? 'q2' : null;
+    }
+    if (otherTime.test(t) || /\bq2\b/.test(t)) return null;
+    if (/\bmonth\b/.test(t) && !may) return null;                                    // "the month of May" is fine
+    if (/\b2023\b/.test(t) && !may) return null;                                     // the whole of 2023 is not in the sample
+    if (/\border/.test(t)) return null; // no answer counts orders on their own; don't hand back dollars
     if (/refund|returns\b|returned/.test(t)) return 'refunds';
     if (/product|item|best.?sell/.test(t)) return 'products';
     if (/store|location|airport|downtown|riverside|northgate/.test(t)) return 'stores';
@@ -1446,7 +1456,7 @@
     tabs.prepend(pill);
     tabs.classList.add('has-pill');
     // The fill spans the whole track and is clipped down to the active tab, so the move
-    // animates clip-path (composited), never width. The track width comes from the last tab,
+    // animates clip-path, never width (the small drop-shadow repaints alongside; cheap at this size). The track width comes from the last tab,
     // not scrollWidth, which would count the pill itself and could only ever grow.
     const placePill = () => {
       const on = tabs.querySelector('[data-tab].is-on');
