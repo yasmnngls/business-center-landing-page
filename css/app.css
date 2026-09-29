@@ -239,10 +239,11 @@
    Dashboard demo
    ===================================================================== */
 .lead--center { max-width: 720px; margin: 0 auto; text-align: center; }
-.demo-hint { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 36px auto 18px; font-size: 14px; color: var(--muted); text-align: center; }
+.demo-hint { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 20px auto 0; font-size: 14px; color: var(--muted); text-align: center; }
 .demo-hint .i { color: var(--accent); }
 .dash, .viewer { border-radius: 16px; border: 1px solid var(--c-line); box-shadow: 0 30px 80px -30px rgba(16, 24, 60, .22), var(--c-sh); margin: 0 calc(-1 * clamp(0px, 4vw, 56px)); }
 .dash { min-height: 640px; }
+.center-head + .dash { margin-top: clamp(40px, 5vw, 64px); } /* same head-to-mock gap as Automate */
 .dash__toolbar { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 20px; padding: 18px 22px; background: #fff; border-bottom: 1px solid var(--c-line); }
 .dash__titlebox { min-width: 0; flex: 1 1 260px; }
 .dash__titleline { display: flex; align-items: center; gap: 6px; min-width: 0; }

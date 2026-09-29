@@ -66,7 +66,7 @@ All markup is in `index.html`. Each section starts with an HTML comment such as
 | # | Section | Anchor | Purpose | Where its code lives |
 |---|---|---|---|---|
 | — | Sticky nav | `#stickyNav` | Nav that appears after the hero nav scrolls away | `style.css` `.nav`; `script.js` "Sticky nav", "Mobile menu" |
-| 01 | Hero | `#top` | Headline, Request Access, and an app window with a working Ask view. Recent and suggested questions swap in answers. **Rows** shows the source rows. Free text is keyword-matched; an unmatched question gets a refusal | `app.css` `.c-sidebar`, `.c-card`, `.c-composer`; `script.js` "Hero chat", "Hero source rows toggle" |
+| 01 | Hero | `#top` | Headline, Request a demo, and an app window with a working Ask view. Recent and suggested questions swap in answers. **Rows** shows the source rows. Free text is keyword-matched; an unmatched question gets a refusal | `app.css` `.c-sidebar`, `.c-card`, `.c-composer`; `script.js` "Hero chat", "Hero source rows toggle" |
 | 02 | Introducing | `#introducing` | The problem, and what Centri is | `style.css` `.intro` |
 | 03 | Connect | `#product` | Three-row logo wall of data sources. Each row pauses on its own on hover or press | `style.css` `.tile-wall`; `script.js` "Connections marquee" |
 | 04 | Trust | `#trust` | One number shown three ways: the answer, the definition, the source rows | `style.css` `.trust`; `script.js` "Segmented tabs" |
@@ -78,9 +78,9 @@ All markup is in `index.html`. Each section starts with an HTML comment such as
 | 09 | Human review | — | Nothing leaves Centri without a person approving it | `style.css` `.review`, `.dark-card` |
 | 10 | Why Centri | — | Two-row testimonial marquee. **Placeholder content** | `style.css` `.why`; `script.js` "Testimonial marquee"; photos in `img/people/` |
 | 11 | FAQ | `#faq` | Four questions. Two answers are visible placeholders | `style.css` `.faq`; `script.js` "FAQ accordion" |
-| 12 | Final CTA | — | Closing headline and Request Access | `style.css` `.final` |
+| 12 | Final CTA | — | Closing headline and Request a demo | `style.css` `.final` |
 | 13 | Footer | — | Links. Privacy and Terms point to `#` today | `style.css` `.footer` |
-| — | Request access modal | `#modalOverlay` | Name, email, company, role, report. Submitting shows a thank-you only; it sends nothing | `style.css` `.modal`; `script.js` "Request access modal" |
+| — | Request a demo modal | `#modalOverlay` | Name, email, company, role, report. Submitting shows a thank-you only; it sends nothing | `style.css` `.modal`; `script.js` "Request a demo modal" |
 | — | Toasts | `#toasts` | Short status messages from the mocks | `app.css` `.c-toasts`; `script.js` "Toasts" |
 
 Shared pieces:

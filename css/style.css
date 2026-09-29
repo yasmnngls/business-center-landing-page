@@ -338,7 +338,9 @@ section[id] { scroll-margin-top: 72px; }
 .segmented {
   display: flex; width: max-content; max-width: 100%; margin: 40px auto 0; padding: 4px; gap: 2px;
   background: var(--soft); border-radius: 14px; overflow-x: auto;
+  scrollbar-width: none; /* still swipes sideways on narrow screens, but never shows a bar */
 }
+.segmented::-webkit-scrollbar { display: none; }
 .segmented button {
   border: none; background: transparent; padding: 9px 18px; border-radius: 10px;
   font-size: 16px; font-weight: 500; color: var(--muted); white-space: nowrap;
