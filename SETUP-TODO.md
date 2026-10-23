@@ -29,7 +29,7 @@ actually done.
 
 - [ ] **Where access requests go** (`LN-06`). The Request a demo form shows a thank-you but
       sends nothing. Choose a destination (form service, email, CRM). Any new third-party
-      script needs approval under `CLAUDE.md` rule 22.
+      script needs approval from the product owner.
 - [ ] **Hosting and domain.** Choose where the static site is served and point the domain at
       it.
 - [ ] **Intro video music** (`VID-01`). License or commission a track. See
