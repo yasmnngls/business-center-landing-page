@@ -83,7 +83,7 @@ Each one is labelled on the page or in the HTML. Real content needs approval fir
 
 ## Contributing
 
-Read [`CLAUDE.md`](CLAUDE.md) before you change anything. It lists what the copy and the mock-ups may claim, and the engineering rules for this repository. Use the terms in [`glossary.md`](glossary.md).
+Read [`context.md`](context.md) first, then use the terms in [`glossary.md`](glossary.md). The copy and the mock-ups may only claim what the product requirements define, and the page stays plain HTML, CSS and JavaScript with no build step.
 
 When you change a file in `css/` or `js/`, bump the `?v=N` number on all three `<link>` and `<script>` tags in `index.html`. The three numbers must match. The current value is `?v=35`.
 

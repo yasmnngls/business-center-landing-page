@@ -65,7 +65,7 @@ Everything below is in `main`. None of it has had an independent check, so every
 | `PG-15` Ask section layout and build-in (§05) | Review | One path: the question, down a reasoning trail (a faint three-row Retail Sales sample under "Reading Retail Sales", then the definition, the refund exclusion and the row count), then an arrow across to one result card. The card leads with the computed figure (Airport +18.4%), then the Store breakdown, then the AI’s sentence, then provenance. The old browser-window table and its card-on-card overlap are gone. Stacked at 960px and below, the trail runs straight down into the card. Plays once in view, in the order Centri builds an answer: rows are read, steps run, the arrow draws, the figure and bars land, then the AI’s sentence, then provenance. CSS only, keyed off `.ask__stage.is-in`. Reduced motion shows everything at once. | — |
 | `PG-14` Remotion intro video project (`video/`) | Review | 60s, 1920×1080. Music bed is a silent placeholder (`video/MUSIC_CUE.md`). | — |
 | `DOC-01` README | Review | Commit `248d547`. Says the Connect wall has two rows; it has three. Fix with the next README change. | — |
-| `DOC-02` CLAUDE.md, context.md, glossary.md, this tracker, SETUP-TODO.md | Review | Modelled on `../internal-marketing`. | — |
+| `DOC-02` context.md, glossary.md, this tracker, SETUP-TODO.md | Review | Modelled on `../internal-marketing`. | — |
 
 ---
 

@@ -13,7 +13,7 @@ that follows. It has four pillars — **Connect, Ask, Dashboard, Automate** — 
 > product). The app windows on this page are hand-built mocks of that product, with sample
 > data. Nothing on this page talks to a Centri server.
 
-New here? Read this file, then [`glossary.md`](glossary.md), then [`CLAUDE.md`](CLAUDE.md).
+New here? Read this file, then [`glossary.md`](glossary.md).
 
 > **This document owns:** nothing. It is the orientation layer: the shortest path from "I have
 > never seen this repository" to knowing where to look.
@@ -21,7 +21,7 @@ New here? Read this file, then [`glossary.md`](glossary.md), then [`CLAUDE.md`](
 > **This document does not own:** product truth (`../internal-marketing/docs/PRD.md`), approved
 > copy (`../internal-marketing/docs/Landing-Page-Copy.md`), vocabulary
 > (`../internal-marketing/docs/Glossary.md`, mirrored in [`glossary.md`](glossary.md)), the
-> guardrails ([`CLAUDE.md`](CLAUDE.md)), or task state ([`TASK-TRACKER.md`](TASK-TRACKER.md)).
+> page guardrails, or task state ([`TASK-TRACKER.md`](TASK-TRACKER.md)).
 > **Where this file and an owning document disagree, the owning document is right.**
 
 ---
@@ -125,8 +125,7 @@ python -m http.server 8080 --bind 127.0.0.1
 
 Open http://127.0.0.1:8080. You can also open `index.html` directly.
 
-**Verify** before you say a change is done. [`CLAUDE.md`](CLAUDE.md) rule 23 owns the full
-list. The short form:
+**Verify** before you say a change is done. The page guardrails own the full\1list. The short form:
 
 1. `node --check js/script.js` exits 0.
 2. Take headless screenshots at 1440px and 390px wide, and look at them. Save them outside the
@@ -140,7 +139,7 @@ list. The short form:
 4. If `css/` or `js/` changed, bump `?v=N` on the three tags in `index.html`.
 5. `git status` shows only the files you meant to change.
 
-The `verify-app` skill in `.claude/skills/` runs these checks.
+Run these checks by hand before each commit.
 
 **Intro video.** `video/` is a separate Remotion project. See
 [`video/README.md`](video/README.md). The site does not depend on it.
@@ -156,7 +155,7 @@ The `verify-app` skill in `.claude/skills/` runs these checks.
 | Canonical and rejected terms | `../internal-marketing/docs/Glossary.md` |
 | Plain-language summary of Centri | `../internal-marketing/docs/Centri-Overview.md` |
 | Product design system, colour, type, motion | `../internal-marketing/docs/Design-Plan.md` |
-| Product guardrails, including the trust rules | `../internal-marketing/CLAUDE.md` |
+| Product guardrails, including the trust rules | `../internal-marketing` (guardrails file) |
 | What the product can actually do today | `../internal-marketing/docs/HANDOFF.md` |
 
 `Landing-Page-Copy.md` warns that some capabilities it describes are not built yet. Read
@@ -168,7 +167,6 @@ The `verify-app` skill in `.claude/skills/` runs these checks.
 
 | Need | Document |
 |---|---|
-| The rules for working on this page | [`CLAUDE.md`](CLAUDE.md) |
 | The words to use | [`glossary.md`](glossary.md) |
 | What is done and what is open | [`TASK-TRACKER.md`](TASK-TRACKER.md) |
 | What a person must do before launch | [`SETUP-TODO.md`](SETUP-TODO.md) |
